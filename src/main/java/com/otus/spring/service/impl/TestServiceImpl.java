@@ -12,7 +12,8 @@ import java.util.Scanner;
 @Service
 public class TestServiceImpl implements TestService {
 
-  private static String studentName;
+  private String studentName;
+  private final Scanner scanner = new Scanner(System.in);
 
   @Value("${zachet.value}")
   private Integer passedPoint;
@@ -24,17 +25,15 @@ public class TestServiceImpl implements TestService {
   }
 
   @Override
-  public void fillStudentsData(){
-    Scanner sc = new Scanner(System.in);
+  public void fillStudentsData() {
     System.out.println("Ваша имя и фамилия?");
-    studentName = sc.nextLine();
+    studentName = scanner.nextLine();
   }
 
   @Override
   public String testing() {
     int correctAnswer = 0;
-    String total = "Вы не сдали";
-    Scanner sc = new Scanner(System.in);
+    var total = "Вы не сдали";
     List<Task> tasks = cvsService.getAll();
 
     fillStudentsData();
@@ -44,8 +43,7 @@ public class TestServiceImpl implements TestService {
       task.getOption().forEach(System.out::print);
       System.out.println();
 
-
-      if (task.getAnswer().equalsIgnoreCase(sc.nextLine())) {
+      if (task.getAnswer().equalsIgnoreCase(scanner.nextLine())) {
         correctAnswer++;
       }
     }
