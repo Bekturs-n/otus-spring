@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ public class CsvReaderImpl implements CsvReader {
 
           tasks.add(Task.builder()
               .id(Integer.parseInt(data[0]))
-              .questions(data[1])
+              .question(data[1])
               .option(Arrays.asList(data[2], data[3], data[4], data[5]))
               .answer(data[6].trim())
               .build());

@@ -10,7 +10,7 @@ import java.util.List;
 public class Task {
 
   private Integer id;
-  private String questions;
+  private String question;
   private List<String> option;
   private String answer;
 

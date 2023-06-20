@@ -15,7 +15,7 @@ public class TestServiceImpl implements TestService {
   private static String studentName;
 
   @Value("${zachet.value}")
-  private Integer zachet;
+  private Integer passedPoint;
 
   private CVSService cvsService;
 
@@ -39,7 +39,7 @@ public class TestServiceImpl implements TestService {
 
     fillStudentsData();
     for (Task task : tasks) {
-      System.out.println(task.getQuestions());
+      System.out.println(task.getQuestion());
       System.out.println("Варианты:");
       task.getOption().forEach(System.out::print);
       System.out.println();
@@ -49,7 +49,7 @@ public class TestServiceImpl implements TestService {
         correctAnswer++;
       }
     }
-    if (correctAnswer >= zachet) {
+    if (correctAnswer >= passedPoint) {
       total = "Вы сдали";
     }
 

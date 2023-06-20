@@ -21,7 +21,7 @@ public class CsvReaderImplTest {
 
   private List<Task> list = Collections.singletonList(Task.builder()
       .id(1)
-      .questions("How much will be 5+5")
+      .question("How much will be 5+5")
       .option(Arrays.asList(" 1", " 2", " 10", " 4"))
       .answer("10")
       .build());
