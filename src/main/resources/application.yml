@@ -1,0 +1,9 @@
+#app config
+server:
+  port: 2004
+
+#application config
+application:
+  filePath: /Users/bektursun.kadyrkulov/IdeaProjects/otus_spring/spring/src/main/resources/i18n/questions.csv
+  zachetValue: 3
+  locale: ru_RU

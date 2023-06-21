@@ -1,10 +1,11 @@
 package com.otus.spring.reader;
 
 import com.opencsv.CSVReader;
+import com.otus.spring.config.AppProperties;
 import com.otus.spring.model.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
 import java.io.FileReader;
@@ -18,10 +19,16 @@ public class CsvReaderImpl implements CsvReader {
 
   Logger logger = LoggerFactory.getLogger(CsvReaderImpl.class);
 
-  @Value("${file.path}")
-  private String filePath;
+  private final AppProperties appProperties;
+  private final MessageSource messageSource;
+
+  public CsvReaderImpl(AppProperties appProperties, MessageSource messageSource) {
+    this.messageSource = messageSource;
+    this.appProperties = appProperties;
+  }
 
   public List<Task> getAllTasks() {
+    String filePath = messageSource.getMessage("faile.path", null, appProperties.getLocale());
     List<Task> tasks = new ArrayList<>();
     try (CSVReader csvReader = new CSVReader(new FileReader(filePath))) {
       String[] nextRecord;
