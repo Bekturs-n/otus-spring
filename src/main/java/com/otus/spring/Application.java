@@ -1,7 +1,6 @@
 package com.otus.spring;
 
-import com.otus.spring.service.abstracts.TestService;
-import com.otus.spring.service.impl.CVSServiceImpl;
+import com.otus.spring.service.TestService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
