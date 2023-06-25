@@ -1,25 +1,22 @@
 package com.otus.spring.service.impl;
 
+import com.otus.spring.dao.TaskDao;
 import com.otus.spring.model.Task;
-import com.otus.spring.reader.CsvReader;
-import com.otus.spring.service.abstracts.CVSService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.otus.spring.service.CVSService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CVSServiceImpl implements CVSService {
 
-  private CsvReader csvReader;
+  private final TaskDao taskDao;
 
-  @Autowired
-  public CVSServiceImpl(CsvReader csvReader) {
-    this.csvReader = csvReader;
-  }
-
+  @Override
   public List<Task> getAll() {
-    return csvReader.getAllTasks();
+    return taskDao.getAlltasks();
   }
 
 }

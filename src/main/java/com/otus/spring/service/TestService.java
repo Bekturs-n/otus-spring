@@ -1,4 +1,4 @@
-package com.otus.spring.service.abstracts;
+package com.otus.spring.service;
 
 public interface TestService {
 

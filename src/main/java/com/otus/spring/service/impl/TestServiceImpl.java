@@ -1,8 +1,9 @@
 package com.otus.spring.service.impl;
 
 import com.otus.spring.model.Task;
-import com.otus.spring.service.abstracts.CVSService;
-import com.otus.spring.service.abstracts.TestService;
+import com.otus.spring.service.CVSService;
+import com.otus.spring.service.TestService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -10,21 +11,17 @@ import java.util.List;
 import java.util.Scanner;
 
 @Service
+@RequiredArgsConstructor
 public class TestServiceImpl implements TestService {
 
   @Value("${zachet.value}")
   private Integer passedPoint;
-
   private String studentName;
-  private final Scanner scanner = new Scanner(System.in);
-  private CVSService cvsService;
-
-  public TestServiceImpl(CVSService cvsService) {
-    this.cvsService = cvsService;
-  }
+  private final CVSService cvsService;
 
   @Override
   public void fillStudentsData() {
+    Scanner scanner = new Scanner(System.in);
     System.out.println("Your name?");
     studentName = scanner.nextLine();
   }
@@ -32,6 +29,7 @@ public class TestServiceImpl implements TestService {
   @Override
   public String testing() {
     int correctAnswer = 0;
+    Scanner scanner = new Scanner(System.in);
     var total = " - You are not passed";
     List<Task> tasks = cvsService.getAll();
 

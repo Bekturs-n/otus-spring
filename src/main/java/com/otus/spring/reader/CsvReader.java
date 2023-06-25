@@ -8,5 +8,5 @@ public interface CsvReader {
 
   Task getById(Integer id);
 
-  List<Task> getAllTasks();
+  List<List<String>> getAllFileData();
 }
