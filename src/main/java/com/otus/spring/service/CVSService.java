@@ -8,4 +8,8 @@ public interface CVSService {
 
   List<Task> getAll();
 
+  void saveResult(String userName, Integer correctAnswer, String result);
+
+  List<String> getLastResultByUserName(String userName);
+
 }

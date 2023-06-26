@@ -45,6 +45,29 @@ public class CsvReaderImpl implements CsvReader {
   }
 
   @Override
+  public List<String> getLastResultByUserName(String userName) {
+    String absolutePath = new File("").getAbsolutePath();
+    String resultPath = messageSource.getMessage("result.path", null, appProperties.getLocale());
+    List<String> result = new ArrayList<>();
+
+    try (CSVReader csvReader = new CSVReader(new FileReader(absolutePath + resultPath))) {
+      String[] nextRecord;
+      // skip the first cell
+      csvReader.readNext();
+      while ((nextRecord = csvReader.readNext()) != null) {
+        String[] cell = nextRecord[0].split(";");
+        if (cell[0].equals(userName)) {
+          result = Arrays.asList(cell);
+        }
+      }
+    } catch (IOException e) {
+      log.error("Ошибка при работе с файлом", e);
+    }
+
+    return result;
+  }
+
+  @Override
   public List<String> readCellByRowNumber(Integer rowNumber) {
     // пока не требуется
     return null;

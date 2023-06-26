@@ -2,8 +2,8 @@ package com.otus.spring.service;
 
 public interface TestService {
 
-  void fillStudentsData();
+  void fillStudentsData(String userName);
 
-  String testing();
+  Integer testing();
 
 }
