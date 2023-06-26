@@ -8,7 +8,6 @@ import org.springframework.context.ApplicationContext;
 public class Application {
 
   public static void main(String[] args) {
-
     SpringApplication.run(Application.class, args);
 //    TestService testService = applicationContext.getBean(TestService.class);
 //    System.out.println(testService.testing());
