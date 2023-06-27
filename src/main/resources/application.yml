@@ -1,7 +1,3 @@
-#app config
-server:
-  port: 2004
-
 #application config
 application:
   filePath: src/main/resources/i18n/questions.csv
