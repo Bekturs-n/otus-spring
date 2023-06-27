@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 
 //лучше под него(EnableConfigurationProperties) сделать отдельный класс для конфигурации
-
 @Configuration
 @EnableConfigurationProperties(AppProperties.class)
 public class ApplicationConfig {
