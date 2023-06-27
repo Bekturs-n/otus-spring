@@ -1,18 +1,18 @@
 package com.otus.spring03.dao;
 
-import com.otus.spring03.domain.Genre;
+import com.otus.spring03.model.Genre;
 
 public interface GenreDao {
 
-    long count();
+  long count();
 
-    void insert(Genre genre);
+  void insert(Genre genre);
 
-    void update(Genre genre);
+  void update(Genre genre);
 
-    void deleteById(long id);
+  void deleteById(long id);
 
-    Genre getById(long id);
+  Genre getById(long id);
 
-    Genre getByName(String genreName);
+  Genre getByName(String genreName);
 }

@@ -1,15 +1,20 @@
 package com.otus.spring03.service;
 
-import com.otus.spring03.domain.Book;
+import com.otus.spring03.model.Book;
 
 public interface BookService {
 
-    void insertBook(Book book);
+  void saveNewBook(Book book);
 
-    Book getBookById(long id);
+  Book getBookById(long id);
 
-    void updateBook(Book book);
+  Book getBookByName(String name);
 
-    void deleteBookById(long id);
+  void updateBook(Integer bookId, String newBookName, String newAutorName, String newAuthorSurname,
+      String newGenreName);
+
+  void deleteBookById(long id);
+
+  String checkAndSaveBook(String bookName, String autor, String genre);
 
 }

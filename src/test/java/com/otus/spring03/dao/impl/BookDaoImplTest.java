@@ -1,0 +1,72 @@
+package com.otus.spring03.dao.impl;
+
+import com.otus.spring03.model.Author;
+import com.otus.spring03.model.Book;
+import com.otus.spring03.model.Genre;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.context.annotation.Import;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+@JdbcTest
+@Import({ BookDaoImpl.class, AuthorDaoJdbc.class, GenreDaoJdbc.class })
+class BookDaoImplTest {
+
+  @Autowired
+  private BookDaoImpl bookDao;
+  @Autowired
+  private AuthorDaoJdbc authorDaoJdbc;
+  @Autowired
+  private GenreDaoJdbc genreDaoJdbc;
+
+  private static Book book;
+  private static Author author;
+  private static Genre genre;
+
+  public void createData(long id) {
+    author = new Author(id, "SomeName", "SomeSurname");
+    genre = new Genre(id, "SomeGenre");
+    book = new Book(id, "Book", author, genre);
+  }
+
+  @Test
+  void insert() {
+    createData(2);
+    authorDaoJdbc.insert(author);
+    genreDaoJdbc.insert(genre);
+    bookDao.insert(book);
+
+    assertNotNull(bookDao.getById(2));
+    bookDao.deleteById(2);
+  }
+
+  @Test
+  void update() {
+    createData(3);
+    authorDaoJdbc.insert(author);
+    genreDaoJdbc.insert(genre);
+    bookDao.insert(book);
+    book.setBookName("AnotherBook");
+    bookDao.update(book);
+
+    assertEquals("AnotherBook", bookDao.getById(3).getBookName());
+
+    bookDao.deleteById(2);
+  }
+
+  @Test
+  void deleteById() {
+    createData(4);
+
+    authorDaoJdbc.insert(author);
+    genreDaoJdbc.insert(genre);
+    bookDao.insert(book);
+
+    bookDao.deleteById(3);
+    assertNull(bookDao.getById(3));
+  }
+}
