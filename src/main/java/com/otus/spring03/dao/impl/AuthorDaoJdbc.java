@@ -12,7 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
-@Slf4j
 @Repository
 public class AuthorDaoJdbc implements AuthorDao {
 
@@ -53,7 +52,6 @@ public class AuthorDaoJdbc implements AuthorDao {
       author = jdbc.queryForObject("SELECT * FROM authors WHERE id = :id",
           Map.of("id", id), new AuthorMapper());
     } catch (EmptyResultDataAccessException e) {
-      log.error("Error with DB", e);
     }
     return author;
   }
@@ -65,7 +63,6 @@ public class AuthorDaoJdbc implements AuthorDao {
       result = jdbc.queryForObject("SELECT * FROM authors WHERE author = :author",
           Map.of("author", author), new AuthorMapper());
     } catch (EmptyResultDataAccessException e) {
-      log.error("Error with DB", e);
     }
     return result;
   }

@@ -12,7 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
-@Slf4j
 @Repository
 public class GenreDaoJdbc implements GenreDao {
 
@@ -51,7 +50,6 @@ public class GenreDaoJdbc implements GenreDao {
       genre = jdbc.queryForObject("SELECT * FROM genres WHERE id = :id",
           Map.of("id", id), new GenreMapper());
     } catch (EmptyResultDataAccessException e) {
-      log.error("Error with DB", e);
     }
     return genre;
   }
@@ -63,7 +61,6 @@ public class GenreDaoJdbc implements GenreDao {
       result = jdbc.queryForObject("SELECT * FROM genres WHERE genre = :genre",
           Map.of("genre", genre), new GenreMapper());
     } catch (EmptyResultDataAccessException e) {
-      log.error("Error with DB", e);
     }
     return result;
   }

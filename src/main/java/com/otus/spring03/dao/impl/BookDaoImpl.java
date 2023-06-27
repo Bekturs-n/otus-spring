@@ -17,7 +17,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
-@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class BookDaoImpl implements BookDao {
@@ -52,7 +51,6 @@ public class BookDaoImpl implements BookDao {
       book = jdbc.queryForObject("SELECT * FROM books WHERE id = :id",
           Map.of("id", id), new BookMapper());
     } catch (EmptyResultDataAccessException e) {
-      log.error("Error with DB", e);
     }
     return book;
   }
@@ -64,7 +62,6 @@ public class BookDaoImpl implements BookDao {
       book = jdbc.queryForObject("SELECT * FROM books WHERE bookName = :name",
           Map.of("name", name), new BookMapper());
     } catch (EmptyResultDataAccessException e) {
-      log.error("Error with DB", e);
     }
     return book;
   }
