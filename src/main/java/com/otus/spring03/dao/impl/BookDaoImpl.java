@@ -73,17 +73,15 @@ public class BookDaoImpl implements BookDaoJdbc {
     List<Book> list = null;
     try {
       list = jdbc.query("SELECT b.id, b.bookName, b.author_id, b.genre_id FROM books AS b",
-          new RowMapper<Book>() {
-            public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
-              Book book = new Book();
-              book.setId(rs.getLong(1));
-              book.setBookName(rs.getString(2));
-              book.setAuthor(Author.builder().id(Long.parseLong(rs.getString(3))).build());
-              book.setGenre(Genre.builder().id(Long.parseLong(rs.getString(4))).build());
-              return book;
-            }
+          (rs, rowNum) -> {
+            Book book = new Book();
+            book.setId(rs.getLong(1));
+            book.setBookName(rs.getString(2));
+            book.setAuthor(Author.builder().id(Long.parseLong(rs.getString(3))).build());
+            book.setGenre(Genre.builder().id(Long.parseLong(rs.getString(4))).build());
+            return book;
           });
-    } catch (DataAccessException e) {
+    } catch (DataAccessException ignored) {
     }
     return list;
   }
