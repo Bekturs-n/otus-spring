@@ -11,51 +11,51 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @JdbcTest
-@Import(AuthorDaoJdbc.class)
+@Import(AuthorDaoJdbcImpl.class)
 class AuthorDaoJdbcTest {
 
   @Autowired
-  private AuthorDaoJdbc authorDaoJdbc;
+  private AuthorDaoJdbcImpl authorDaoJdbcImpl;
 
   @Test
   void insert() {
     Author author = Author.builder().author("SomeName").surname("").build();
-    authorDaoJdbc.insert(author);
-    author = authorDaoJdbc.getByName(author.getAuthor());
+    authorDaoJdbcImpl.insert(author);
+    author = authorDaoJdbcImpl.getByName(author.getAuthor());
 
     assertNotNull(author);
-    authorDaoJdbc.deleteById(author.getId());
+    authorDaoJdbcImpl.deleteById(author.getId());
   }
 
   @Test
   void update() {
     Author author = Author.builder().author("SomeName").surname("").build();
-    authorDaoJdbc.insert(author);
-    author = authorDaoJdbc.getByName(author.getAuthor());
+    authorDaoJdbcImpl.insert(author);
+    author = authorDaoJdbcImpl.getByName(author.getAuthor());
     author.setSurname("Some2");
-    authorDaoJdbc.update(author);
+    authorDaoJdbcImpl.update(author);
 
-    assertEquals("Some2", authorDaoJdbc.getById(author.getId()).getSurname());
-    authorDaoJdbc.deleteById(author.getId());
+    assertEquals("Some2", authorDaoJdbcImpl.getById(author.getId()).getSurname());
+    authorDaoJdbcImpl.deleteById(author.getId());
   }
 
   @Test
   void deleteById() {
     Author author = Author.builder().author("SomeName").surname("").build();
-    authorDaoJdbc.insert(author);
-    author = authorDaoJdbc.getByName(author.getAuthor());
+    authorDaoJdbcImpl.insert(author);
+    author = authorDaoJdbcImpl.getByName(author.getAuthor());
 
-    authorDaoJdbc.deleteById(author.getId());
-    assertNull(authorDaoJdbc.getById(author.getId()));
+    authorDaoJdbcImpl.deleteById(author.getId());
+    assertNull(authorDaoJdbcImpl.getById(author.getId()));
   }
 
   @Test
   void getById() {
     Author author = Author.builder().author("SomeName").surname("").build();
-    authorDaoJdbc.insert(author);
-    author = authorDaoJdbc.getByName(author.getAuthor());
+    authorDaoJdbcImpl.insert(author);
+    author = authorDaoJdbcImpl.getByName(author.getAuthor());
 
-    assertEquals("SomeName", authorDaoJdbc.getById(author.getId()).getAuthor());
-    authorDaoJdbc.deleteById(author.getId());
+    assertEquals("SomeName", authorDaoJdbcImpl.getById(author.getId()).getAuthor());
+    authorDaoJdbcImpl.deleteById(author.getId());
   }
 }

@@ -1,7 +1,6 @@
 package com.otus.spring03.service.impl;
 
-import com.otus.spring03.dao.GenreDao;
-import com.otus.spring03.model.Author;
+import com.otus.spring03.dao.GenreDaoJdbc;
 import com.otus.spring03.model.Genre;
 import com.otus.spring03.service.GenreService;
 import lombok.RequiredArgsConstructor;
@@ -11,45 +10,46 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class GenreServiceImpl implements GenreService {
 
-  private final GenreDao genreDao;
+  private final GenreDaoJdbc genreDaoJdbc;
 
   @Override
   public long count() {
-    return genreDao.count();
+    return genreDaoJdbc.count();
   }
 
   @Override
   public void save(Genre genre) {
-    genreDao.insert(genre);
+    genreDaoJdbc.insert(genre);
   }
 
   @Override
   public Genre getById(long id) {
-    return genreDao.getById(id);
+    return genreDaoJdbc.getById(id);
   }
 
   @Override
   public Genre getByName(String genreName) {
-    return genreDao.getByName(genreName);
+    return genreDaoJdbc.getByName(genreName);
   }
 
   @Override
   public void update(Genre genre) {
-    genreDao.update(genre);
+    genreDaoJdbc.update(genre);
   }
 
   @Override
   public void removeById(long id) {
-    genreDao.deleteById(id);
+    genreDaoJdbc.deleteById(id);
   }
 
   @Override
   public Genre getOrCreateGenre(String genreName) {
-    Genre genre = genreDao.getByName(genreName);
+    Genre genre = genreDaoJdbc.getByName(genreName);
+
     if (genre == null) {
       genre = Genre.builder().genre(genreName).build();
-      genre.setId(genreDao.count() + 1);
-      genreDao.insert(genre);
+      genre.setId(genreDaoJdbc.count() + 1);
+      genreDaoJdbc.insert(genre);
     }
 
     return genre;

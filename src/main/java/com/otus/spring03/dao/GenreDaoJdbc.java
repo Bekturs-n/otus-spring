@@ -2,7 +2,7 @@ package com.otus.spring03.dao;
 
 import com.otus.spring03.model.Genre;
 
-public interface GenreDao {
+public interface GenreDaoJdbc {
 
   long count();
 

@@ -9,6 +9,8 @@ import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
+import java.util.List;
+
 @Slf4j
 @ShellComponent
 @RequiredArgsConstructor
@@ -59,6 +61,10 @@ public class ApplicationShellComponent {
   @ShellMethod(value = "Delete by id", key = { "d", "delete" })
   public void removeBook(Long bookId) {
     bookService.deleteBookById(bookId);
+  }
+  @ShellMethod(value = "Get All", key = { "ga", "Get all" })
+  public List<Book> getAll() {
+    return bookService.getAll();
   }
 
   private Availability isUserNameNotNull() {

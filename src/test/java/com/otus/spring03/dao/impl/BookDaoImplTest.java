@@ -13,31 +13,25 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @JdbcTest
-@Import({ BookDaoImpl.class, AuthorDaoJdbc.class, GenreDaoJdbc.class })
+@Import({ BookDaoImpl.class, AuthorDaoJdbcImpl.class, GenreDaoJdbcImpl.class })
 class BookDaoImplTest {
 
   @Autowired
   private BookDaoImpl bookDao;
   @Autowired
-  private AuthorDaoJdbc authorDaoJdbc;
+  private AuthorDaoJdbcImpl authorDaoJdbcImpl;
   @Autowired
-  private GenreDaoJdbc genreDaoJdbc;
+  private GenreDaoJdbcImpl genreDaoJdbcImpl;
 
-  private static Book book;
-  private static Author author;
-  private static Genre genre;
-
-  public void createData(long id) {
-    author = new Author(id, "SomeName", "SomeSurname");
-    genre = new Genre(id, "SomeGenre");
-    book = new Book(id, "Book", author, genre);
-  }
+  private Book book;
+  private Author author;
+  private Genre genre;
 
   @Test
   void insert() {
     createData(2);
-    authorDaoJdbc.insert(author);
-    genreDaoJdbc.insert(genre);
+    authorDaoJdbcImpl.insert(author);
+    genreDaoJdbcImpl.insert(genre);
     bookDao.insert(book);
 
     assertNotNull(bookDao.getById(2));
@@ -47,8 +41,8 @@ class BookDaoImplTest {
   @Test
   void update() {
     createData(3);
-    authorDaoJdbc.insert(author);
-    genreDaoJdbc.insert(genre);
+    authorDaoJdbcImpl.insert(author);
+    genreDaoJdbcImpl.insert(genre);
     bookDao.insert(book);
     book.setBookName("AnotherBook");
     bookDao.update(book);
@@ -62,11 +56,17 @@ class BookDaoImplTest {
   void deleteById() {
     createData(4);
 
-    authorDaoJdbc.insert(author);
-    genreDaoJdbc.insert(genre);
+    authorDaoJdbcImpl.insert(author);
+    genreDaoJdbcImpl.insert(genre);
     bookDao.insert(book);
 
     bookDao.deleteById(3);
     assertNull(bookDao.getById(3));
+  }
+
+  private void createData(long id) {
+    author = new Author(id, "SomeName", "SomeSurname");
+    genre = new Genre(id, "SomeGenre");
+    book = new Book(id, "Book", author, genre);
   }
 }

@@ -1,8 +1,7 @@
 package com.otus.spring03.dao.impl;
 
-import com.otus.spring03.dao.GenreDao;
+import com.otus.spring03.dao.GenreDaoJdbc;
 import com.otus.spring03.model.Genre;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -13,11 +12,11 @@ import java.sql.SQLException;
 import java.util.Map;
 
 @Repository
-public class GenreDaoJdbc implements GenreDao {
+public class GenreDaoJdbcImpl implements GenreDaoJdbc {
 
   private final NamedParameterJdbcOperations jdbc;
 
-  public GenreDaoJdbc(NamedParameterJdbcOperations jdbc) {
+  public GenreDaoJdbcImpl(NamedParameterJdbcOperations jdbc) {
     this.jdbc = jdbc;
   }
 

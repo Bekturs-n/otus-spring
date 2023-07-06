@@ -1,8 +1,7 @@
 package com.otus.spring03.dao.impl;
 
-import com.otus.spring03.dao.AuthorDao;
+import com.otus.spring03.dao.AuthorDaoJdbc;
 import com.otus.spring03.model.Author;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -13,11 +12,11 @@ import java.sql.SQLException;
 import java.util.Map;
 
 @Repository
-public class AuthorDaoJdbc implements AuthorDao {
+public class AuthorDaoJdbcImpl implements AuthorDaoJdbc {
 
   private final NamedParameterJdbcOperations jdbc;
 
-  public AuthorDaoJdbc(NamedParameterJdbcOperations jdbc) {
+  public AuthorDaoJdbcImpl(NamedParameterJdbcOperations jdbc) {
     this.jdbc = jdbc;
   }
 
@@ -49,7 +48,7 @@ public class AuthorDaoJdbc implements AuthorDao {
   public Author getById(long id) {
     Author author = null;
     try {
-      author = jdbc.queryForObject("SELECT * FROM authors WHERE id = :id",
+      author = jdbc.queryForObject("SELECT a.id, a.author, a.surname FROM authors AS a WHERE id = :id",
           Map.of("id", id), new AuthorMapper());
     } catch (EmptyResultDataAccessException e) {
     }

@@ -11,52 +11,52 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @JdbcTest
-@Import(GenreDaoJdbc.class)
+@Import(GenreDaoJdbcImpl.class)
 class GenreDaoJdbcTest {
 
   @Autowired
-  private GenreDaoJdbc genreDaoJdbc;
+  private GenreDaoJdbcImpl genreDaoJdbcImpl;
 
   @Test
   void insert() {
     Genre genre = Genre.builder().genre("Genre").build();
-    genreDaoJdbc.insert(genre);
-    genre = genreDaoJdbc.getByName("Genre");
+    genreDaoJdbcImpl.insert(genre);
+    genre = genreDaoJdbcImpl.getByName("Genre");
 
     assertNotNull(genre.getGenre());
-    genreDaoJdbc.deleteById(genre.getId());
+    genreDaoJdbcImpl.deleteById(genre.getId());
   }
 
   @Test
   void update() {
     Genre genre = Genre.builder().genre("Genre").build();
-    genreDaoJdbc.insert(genre);
-    genre = genreDaoJdbc.getByName("Genre");
+    genreDaoJdbcImpl.insert(genre);
+    genre = genreDaoJdbcImpl.getByName("Genre");
     genre.setGenre("AnotherGenre");
-    genreDaoJdbc.update(genre);
+    genreDaoJdbcImpl.update(genre);
 
-    assertEquals("AnotherGenre", genreDaoJdbc.getById(genre.getId()).getGenre());
-    genreDaoJdbc.deleteById(genre.getId());
+    assertEquals("AnotherGenre", genreDaoJdbcImpl.getById(genre.getId()).getGenre());
+    genreDaoJdbcImpl.deleteById(genre.getId());
   }
 
   @Test
   void deleteById() {
     Genre genre = Genre.builder().genre("Genre").build();
-    genreDaoJdbc.insert(genre);
-    genre = genreDaoJdbc.getByName("Genre");
+    genreDaoJdbcImpl.insert(genre);
+    genre = genreDaoJdbcImpl.getByName("Genre");
 
-    genreDaoJdbc.deleteById(genre.getId());
-    assertNull(genreDaoJdbc.getById(genre.getId()));
+    genreDaoJdbcImpl.deleteById(genre.getId());
+    assertNull(genreDaoJdbcImpl.getById(genre.getId()));
   }
 
   @Test
   void getByName() {
     Genre genre = Genre.builder().genre("Genre").build();
-    genreDaoJdbc.insert(genre);
-    genre = genreDaoJdbc.getByName("Genre");
+    genreDaoJdbcImpl.insert(genre);
+    genre = genreDaoJdbcImpl.getByName("Genre");
 
     assertNotNull(genre);
-    genreDaoJdbc.deleteById(genre.getId());
+    genreDaoJdbcImpl.deleteById(genre.getId());
 
   }
 }

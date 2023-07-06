@@ -6,6 +6,8 @@ public interface AuthorService {
 
   Author getAuthorByName(String name);
 
+  Author getAuthorById(long id);
+
   Long getCount();
 
   void save(Author author);

@@ -2,7 +2,7 @@ package com.otus.spring03.dao;
 
 import com.otus.spring03.model.Author;
 
-public interface AuthorDao {
+public interface AuthorDaoJdbc {
 
   long count();
 

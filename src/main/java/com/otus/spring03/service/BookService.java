@@ -2,9 +2,13 @@ package com.otus.spring03.service;
 
 import com.otus.spring03.model.Book;
 
+import java.util.List;
+
 public interface BookService {
 
   void saveNewBook(Book book);
+
+  List<Book> getAll();
 
   Book getBookById(long id);
 

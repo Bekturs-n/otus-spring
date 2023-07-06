@@ -4,13 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 @Data
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class Book {
   private long id;
   private String bookName;

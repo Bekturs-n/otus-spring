@@ -2,7 +2,9 @@ package com.otus.spring03.dao;
 
 import com.otus.spring03.model.Book;
 
-public interface BookDao {
+import java.util.List;
+
+public interface BookDaoJdbc {
 
   void insert(Book book);
 
@@ -13,5 +15,7 @@ public interface BookDao {
   Book getById(long id);
 
   Book getByName(String name);
+
+  List<Book> getAll();
 
 }

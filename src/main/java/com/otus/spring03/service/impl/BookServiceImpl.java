@@ -1,6 +1,6 @@
 package com.otus.spring03.service.impl;
 
-import com.otus.spring03.dao.BookDao;
+import com.otus.spring03.dao.BookDaoJdbc;
 import com.otus.spring03.model.Author;
 import com.otus.spring03.model.Book;
 import com.otus.spring03.model.Genre;
@@ -11,34 +11,51 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
 
-  private final BookDao bookDao;
+  private final BookDaoJdbc bookDaoJdbc;
   private final AuthorService authorService;
   private final GenreService genreService;
 
   @Override
   public void saveNewBook(Book book) {
-    bookDao.insert(book);
+    bookDaoJdbc.insert(book);
+  }
+
+  @Override
+  public List<Book> getAll() {
+    List<Book> list = bookDaoJdbc.getAll();
+    if (list == null) {
+      log.error("DataBase is empty ");
+      return null;
+    }
+
+    for (Book book : list) {
+      book.setAuthor(authorService.getAuthorById(book.getAuthor().getId()));
+      book.setGenre(genreService.getById(book.getGenre().getId()));
+    }
+    return list;
   }
 
   @Override
   public Book getBookById(long id) {
-    return bookDao.getById(id);
+    return bookDaoJdbc.getById(id);
   }
 
   @Override
   public Book getBookByName(String name) {
-    return bookDao.getByName(name);
+    return bookDaoJdbc.getByName(name);
   }
 
   @Override
   public void updateBook(Integer bookId, String newBookName, String newAutorName, String newAuthorSurname,
       String newGenreName) {
-    Book book = bookDao.getById(bookId);
+    Book book = bookDaoJdbc.getById(bookId);
     if (book == null) {
       return;
     }
@@ -54,21 +71,21 @@ public class BookServiceImpl implements BookService {
 
     genreService.update(genre);
     authorService.update(author);
-    bookDao.update(book);
+    bookDaoJdbc.update(book);
   }
 
   @Override
   public void deleteBookById(long id) {
-    Book book = bookDao.getById(id);
+    Book book = bookDaoJdbc.getById(id);
     if (book == null) {
       return;
     }
-    bookDao.deleteById(id);
+    bookDaoJdbc.deleteById(id);
   }
 
   @Override
   public String checkAndSaveBook(String bookName, String autor, String genreName) {
-    Book book = getBookByName(bookName);
+    Book book = bookDaoJdbc.getByName(bookName);
 
     if (book != null) {
       return "This book we have in DB";
@@ -77,7 +94,7 @@ public class BookServiceImpl implements BookService {
     Genre genre = genreService.getOrCreateGenre(genreName);
 
     book = Book.builder().bookName(bookName).author(author).genre(genre).build();
-    bookDao.insert(book);
+    bookDaoJdbc.insert(book);
 
     return "New book saved ";
   }
