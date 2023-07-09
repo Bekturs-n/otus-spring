@@ -1,0 +1,6 @@
+Id; Question; Variant1; Variant2; Variant3; Variant4; Answer;
+1;How much will be 5+5; 1; 2; 10; 4; 10;
+2;How much will be 10+10; 1; 20; 10; 4; 20;
+3;How much will be 20-10; 1; 2; 10; 4; 10;
+4;How much will be 30+40; 70; 2; 10; 4; 70;
+5;How much will be 73-76; 1; 2; 10; 3; 3;
