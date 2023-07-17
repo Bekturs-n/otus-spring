@@ -1,62 +1,87 @@
 package com.otus.spring03.dao.impl;
 
 import com.otus.spring03.model.Genre;
+import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import java.util.List;
 
-@JdbcTest
-@Import(GenreDaoJdbcImpl.class)
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+/**
+ * More information  - @see<a href="https://java-ru-blog.blogspot.com/2020/04/spring-boot-data-jpa-tests.html">@DataJpaTest</a>
+ */
+@DataJpaTest
+@Import(GenreDaoImpl.class)
 class GenreDaoJdbcTest {
 
+  private static final int EXPECTED_LIST_SIZE = 3;
+  private static final String GENRE_NAME = "Novel";
+  
   @Autowired
-  private GenreDaoJdbcImpl genreDaoJdbcImpl;
+  private GenreDaoImpl genreDaoJdbcImpl;
+  @Autowired
+  private TestEntityManager tem;
+  
+  @Test
+  void getById() {
+    val actual = genreDaoJdbcImpl.findById(1);
+    val expected = tem.find(Genre.class, 1L);
+
+    assertThat(actual).isPresent().get()
+        .usingRecursiveComparison().isEqualTo(expected);
+  }
+
+  @Test
+  void findByName() {
+    val actual = genreDaoJdbcImpl.findByName(GENRE_NAME);
+    val expected = tem.find(Genre.class, 1L);
+
+    assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
+  }
+
+  @Test
+  void delete() {
+    val genre = genreDaoJdbcImpl.findById(1L);
+    genreDaoJdbcImpl.delete(genre.get());
+
+    val expected = genreDaoJdbcImpl.findById(1L);
+    assertFalse(expected.isPresent());
+  }
 
   @Test
   void insert() {
-    Genre genre = Genre.builder().genre("Genre").build();
-    genreDaoJdbcImpl.insert(genre);
-    genre = genreDaoJdbcImpl.getByName("Genre");
+    val actual = genreDaoJdbcImpl.insert(Genre.builder().genre(GENRE_NAME).build());
+    val expected = tem.find(Genre.class, actual.getId());
 
-    assertNotNull(genre.getGenre());
-    genreDaoJdbcImpl.deleteById(genre.getId());
+    assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
   }
 
   @Test
   void update() {
-    Genre genre = Genre.builder().genre("Genre").build();
-    genreDaoJdbcImpl.insert(genre);
-    genre = genreDaoJdbcImpl.getByName("Genre");
-    genre.setGenre("AnotherGenre");
+    val genre = tem.find(Genre.class, 1L);
+    genre.setGenre(GENRE_NAME);
     genreDaoJdbcImpl.update(genre);
+    val actual = genreDaoJdbcImpl.findByName(GENRE_NAME);
 
-    assertEquals("AnotherGenre", genreDaoJdbcImpl.getById(genre.getId()).getGenre());
-    genreDaoJdbcImpl.deleteById(genre.getId());
+    assertNotNull(actual);
+    assertEquals(GENRE_NAME, actual.getGenre());
   }
 
-  @Test
-  void deleteById() {
-    Genre genre = Genre.builder().genre("Genre").build();
-    genreDaoJdbcImpl.insert(genre);
-    genre = genreDaoJdbcImpl.getByName("Genre");
-
-    genreDaoJdbcImpl.deleteById(genre.getId());
-    assertNull(genreDaoJdbcImpl.getById(genre.getId()));
-  }
 
   @Test
-  void getByName() {
-    Genre genre = Genre.builder().genre("Genre").build();
-    genreDaoJdbcImpl.insert(genre);
-    genre = genreDaoJdbcImpl.getByName("Genre");
+  void findAll() {
+    List<Genre> authorList =  genreDaoJdbcImpl.findAll();
 
-    assertNotNull(genre);
-    genreDaoJdbcImpl.deleteById(genre.getId());
-
+    assertThat(authorList).isNotNull().hasSize(EXPECTED_LIST_SIZE)
+        .allMatch(s -> !s.getGenre().equals(""))
+        .allMatch(s -> s.getBooks() != null && s.getBooks().size() > 0);
   }
 }

@@ -2,19 +2,25 @@ package com.otus.spring03.service;
 
 import com.otus.spring03.model.Genre;
 
-public interface GenreService {
+import java.util.List;
 
+public interface GenreService {
   long count();
 
   void save(Genre genre);
 
-  Genre getById(long id);
+  Genre getBy(long id);
 
-  Genre getByName(String genreName);
-
-  Genre getOrCreateGenre(String genreName);
+  Genre getBy(String genreName);
 
   void update(Genre genre);
 
-  void removeById(long id);
+  void removeBy(long id);
+
+  Genre getOrCreateGenre(String genreName);
+
+  List<Genre> getAll();
+
+  void saveMoreByName(List<Genre> genre);
+
 }

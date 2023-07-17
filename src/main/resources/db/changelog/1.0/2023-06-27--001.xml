@@ -16,7 +16,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="surname" type="varchar(255)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
         </createTable>
     </changeSet>
@@ -37,28 +37,22 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="bookName" type="varchar(255)">
+            <column name="book_name" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="author_id" type="bigint">
                 <constraints nullable="false" foreignKeyName="fk_author_id" references="authors(id)"/>
             </column>
-            <column name="genre_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="fk_genre_id" references="genres(id)"/>
-            </column>
         </createTable>
     </changeSet>
 
-    <changeSet id="2023-06-27--001-users" author="bektursun.kadyrkulov">
-        <createTable tableName="users">
-            <column name="id" type="bigint" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
+    <changeSet id="2023-06-27--001-books_genre" author="bektursun.kadyrkulov">
+        <createTable tableName="books_genre">
+            <column name="books_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_book_id" references="books(id)"/>
             </column>
-            <column name="login" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="pass" type="varchar(255)">
-                <constraints nullable="false"/>
+            <column name="genre_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_genres_id" references="genres(id)" />
             </column>
         </createTable>
     </changeSet>

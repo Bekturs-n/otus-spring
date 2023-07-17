@@ -5,20 +5,17 @@ import com.otus.spring03.model.Book;
 import java.util.List;
 
 public interface BookService {
-
-  void saveNewBook(Book book);
+  Book save(Book book);
 
   List<Book> getAll();
 
-  Book getBookById(long id);
+  Book getBy(long id);
 
-  Book getBookByName(String name);
+  void updateBook(Integer bookId, String newBookName);
 
-  void updateBook(Integer bookId, String newBookName, String newAutorName, String newAuthorSurname,
-      String newGenreName);
+  void removeBy(long id);
 
-  void deleteBookById(long id);
+  Book getByName(String name);
 
-  String checkAndSaveBook(String bookName, String autor, String genre);
-
+  String checkAndSave(String bookName, String authorName, String comment, String[] genreNames);
 }

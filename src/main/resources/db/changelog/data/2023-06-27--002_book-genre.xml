@@ -8,9 +8,9 @@
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
     <changeSet id="2022-01-22--001_data" author="bekturun.kadyrkulov">
-        <insert tableName="users">
-            <column name="login" value="Beka"/>
-            <column name="pass" value="12345"/>
+        <insert tableName="books_genre">
+            <column name="books_id" value="1"/>
+            <column name="genre_id" value="1"/>
         </insert>
     </changeSet>
 </databaseChangeLog>

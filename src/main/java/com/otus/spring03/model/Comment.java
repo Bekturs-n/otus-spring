@@ -5,8 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.NamedQuery;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,31 +14,24 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
-/**
- * More about lombok @see <a href="https://habr.com/ru/companies/haulmont/articles/564682/">Lombok with JPA</a>
- */
+@Entity
 @Getter
 @Setter
-@Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "authors")
-@NamedQuery(name = "getAll", query = "select a from Author a")
-public class Author {
+@Table(name = "comments")
+public class Comment {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
   @Column
-  private String author;
+  private String comment;
 
-  @Column
-  private String surname;
+  @ManyToOne
+  @JoinColumn(name = "book_id")
+  private Book book;
 
-  @OneToMany(mappedBy = "author")
-  private List<Book> books;
 }

@@ -2,71 +2,64 @@ package com.otus.spring03.dao.impl;
 
 import com.otus.spring03.model.Author;
 import com.otus.spring03.model.Book;
+import com.otus.spring03.model.Comment;
 import com.otus.spring03.model.Genre;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
+import java.util.Collections;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-@JdbcTest
-@Import({ BookDaoImpl.class, AuthorDaoJdbcImpl.class, GenreDaoJdbcImpl.class })
+@DataJpaTest
+@Import(BookDaoImpl.class)
 class BookDaoImplTest {
+
+  private static final String BOOK_NAME = "Musketeer";
 
   @Autowired
   private BookDaoImpl bookDao;
-  @Autowired
-  private AuthorDaoJdbcImpl authorDaoJdbcImpl;
-  @Autowired
-  private GenreDaoJdbcImpl genreDaoJdbcImpl;
 
-  private Book book;
-  private Author author;
-  private Genre genre;
+  @Autowired
+  private TestEntityManager tem;
 
   @Test
   void insert() {
-    createData(2);
-    authorDaoJdbcImpl.insert(author);
-    genreDaoJdbcImpl.insert(genre);
-    bookDao.insert(book);
+    Author author = tem.find(Author.class, 1L);
+    Book actualBook = Book.builder()
+        .bookName("Name")
+        .author(author).build();
 
-    assertNotNull(bookDao.getById(2));
-    bookDao.deleteById(2);
+    actualBook = bookDao.insert(actualBook);
+    Book expected = tem.find(Book.class, actualBook.getId());
+
+    assertThat(actualBook).usingRecursiveComparison().isEqualTo(expected);
   }
 
   @Test
-  void update() {
-    createData(3);
-    authorDaoJdbcImpl.insert(author);
-    genreDaoJdbcImpl.insert(genre);
-    bookDao.insert(book);
-    book.setBookName("AnotherBook");
-    bookDao.update(book);
+  void testUpdateAndFindById() {
+    String newBookName = BOOK_NAME + " twenty years after";
+    Book actualBook = bookDao.findByName(BOOK_NAME);
+    actualBook.setBookName(newBookName);
 
-    assertEquals("AnotherBook", bookDao.getById(3).getBookName());
+    actualBook = bookDao.update(actualBook);
+    Book expected = tem.find(Book.class, 1L);
 
-    bookDao.deleteById(2);
+    assertThat(actualBook).usingRecursiveComparison().isEqualTo(expected);
   }
 
-  @Test
-  void deleteById() {
-    createData(4);
+    @Test
+    void deleteById() {
+    Book book = tem.find(Book.class, 1L);
+    bookDao.delete(book);
 
-    authorDaoJdbcImpl.insert(author);
-    genreDaoJdbcImpl.insert(genre);
-    bookDao.insert(book);
-
-    bookDao.deleteById(3);
-    assertNull(bookDao.getById(3));
-  }
-
-  private void createData(long id) {
-    author = new Author(id, "SomeName", "SomeSurname");
-    genre = new Genre(id, "SomeGenre");
-    book = new Book(id, "Book", author, genre);
-  }
+    assertNull(tem.find(Book.class, 1L));
+    }
 }

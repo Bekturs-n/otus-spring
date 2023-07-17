@@ -1,56 +1,72 @@
 package com.otus.spring03.service.impl;
 
-import com.otus.spring03.dao.AuthorDaoJdbc;
+import com.otus.spring03.dao.AuthorDao;
 import com.otus.spring03.model.Author;
 import com.otus.spring03.service.AuthorService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
+@Log4j2
 @Component
 @RequiredArgsConstructor
 public class AuthorServiceImpl implements AuthorService {
 
-  private final AuthorDaoJdbc authorDaoJdbc;
+  private final AuthorDao authorDaoJdbc;
 
   @Override
-  public Author getAuthorByName(String name) {
-    return authorDaoJdbc.getByName(name);
+  @Transactional
+  public Author getAuthorBy(long id) {
+    Optional<Author> author = authorDaoJdbc.findById(id);
+
+    if (author.isPresent()) {
+      return author.get();
+    } else {
+      log.info("No author with this credentials");
+      return null;
+    }
   }
 
   @Override
-  public Author getAuthorById(long id) {
-    return authorDaoJdbc.getById(id);
-  }
-
-  @Override
+  @Transactional
   public Long getCount() {
-    return authorDaoJdbc.count();
+    return (long) authorDaoJdbc.findAll().size();
   }
 
   @Override
+  @Transactional
   public void update(Author author) {
     authorDaoJdbc.update(author);
   }
 
   @Override
-  public void save(Author author) {
-    authorDaoJdbc.insert(author);
+  @Transactional
+  public Author save(Author author) {
+    return authorDaoJdbc.insert(author);
+  }
+
+  @Transactional
+  @Override
+  public void remove(Author author) {
+    authorDaoJdbc.delete(author);
   }
 
   @Override
-  public void removeById(long id) {
-    authorDaoJdbc.deleteById(id);
-  }
-
-  @Override
-  public Author getOrCreateAuthor(String authorName) {
-    Author author = authorDaoJdbc.getByName(authorName);
-    if (author == null) {
-      author = Author.builder().author(authorName).surname("").build();
-      author.setId(authorDaoJdbc.count() + 1);
-      authorDaoJdbc.insert(author);
+  @Transactional
+  public void removeBy(long id) {
+    Author author = getAuthorBy(id);
+    if (author != null) {
+      authorDaoJdbc.delete(author);
     }
+  }
 
-    return author;
+  @Override
+  @Transactional
+  public Author getOrCreateAuthor(String authorName) {
+    Optional<Author> optionalAuthor = authorDaoJdbc.findByName(authorName);
+    return optionalAuthor.orElseGet(() -> authorDaoJdbc.insert(Author.builder().author(authorName).build()));
   }
 }

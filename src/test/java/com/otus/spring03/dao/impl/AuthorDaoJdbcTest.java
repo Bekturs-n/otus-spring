@@ -1,61 +1,92 @@
 package com.otus.spring03.dao.impl;
 
 import com.otus.spring03.model.Author;
+import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import java.util.List;
 
-@JdbcTest
-@Import(AuthorDaoJdbcImpl.class)
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+/**
+ * More information  - @see<a href="https://java-ru-blog.blogspot.com/2020/04/spring-boot-data-jpa-tests.html">@DataJpaTest</a>
+ */
+@DataJpaTest
+@Import(AuthorDaoImpl.class)
 class AuthorDaoJdbcTest {
 
+  private static final int EXPECTED_LIST_SIZE = 1;
+  private static final String AUTHOR_NAME = "Alexandre";
+
   @Autowired
-  private AuthorDaoJdbcImpl authorDaoJdbcImpl;
+  private AuthorDaoImpl authorDaoJPAImpl;
+
+  @Autowired
+  private TestEntityManager tem;
+
+  @Test
+  void getById() {
+    val actual = authorDaoJPAImpl.findById(1);
+    val expected = tem.find(Author.class, 1L);
+
+    assertThat(actual).isPresent().get()
+        .usingRecursiveComparison().isEqualTo(expected);
+  }
+
+  @Test
+  void findByName() {
+    val actual = authorDaoJPAImpl.findByName(AUTHOR_NAME);
+    val expected = tem.find(Author.class, 1L);
+
+    assertThat(actual).isPresent().get()
+        .usingRecursiveComparison().isEqualTo(expected);
+  }
+
+  @Test
+  void delete() {
+    val author = authorDaoJPAImpl.findById(1L);
+    authorDaoJPAImpl.delete(author.get());
+
+    val expected = authorDaoJPAImpl.findById(1L);
+    assertFalse(expected.isPresent());
+
+  }
 
   @Test
   void insert() {
-    Author author = Author.builder().author("SomeName").surname("").build();
-    authorDaoJdbcImpl.insert(author);
-    author = authorDaoJdbcImpl.getByName(author.getAuthor());
+    val actual = authorDaoJPAImpl.insert(Author.builder().author(AUTHOR_NAME).build());
+    val expected = tem.find(Author.class, actual.getId());
 
-    assertNotNull(author);
-    authorDaoJdbcImpl.deleteById(author.getId());
+    assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
   }
 
   @Test
   void update() {
-    Author author = Author.builder().author("SomeName").surname("").build();
-    authorDaoJdbcImpl.insert(author);
-    author = authorDaoJdbcImpl.getByName(author.getAuthor());
-    author.setSurname("Some2");
-    authorDaoJdbcImpl.update(author);
+    val author = tem.find(Author.class, 1L);
+    author.setAuthor(AUTHOR_NAME);
+    authorDaoJPAImpl.update(author);
+    val actual = authorDaoJPAImpl.findByName(AUTHOR_NAME);
 
-    assertEquals("Some2", authorDaoJdbcImpl.getById(author.getId()).getSurname());
-    authorDaoJdbcImpl.deleteById(author.getId());
+    assertTrue(actual.isPresent());
+    assertEquals(AUTHOR_NAME, actual.get().getAuthor());
   }
+
 
   @Test
-  void deleteById() {
-    Author author = Author.builder().author("SomeName").surname("").build();
-    authorDaoJdbcImpl.insert(author);
-    author = authorDaoJdbcImpl.getByName(author.getAuthor());
+  void findAll() {
+    List<Author> authorList =  authorDaoJPAImpl.findAll();
 
-    authorDaoJdbcImpl.deleteById(author.getId());
-    assertNull(authorDaoJdbcImpl.getById(author.getId()));
+    assertThat(authorList).isNotNull().hasSize(EXPECTED_LIST_SIZE)
+        .allMatch(s -> !s.getAuthor().equals(""))
+        .allMatch(s -> !s.getSurname().equals(""))
+        .allMatch(s -> s.getBooks() != null && s.getBooks().size() > 0);
   }
 
-  @Test
-  void getById() {
-    Author author = Author.builder().author("SomeName").surname("").build();
-    authorDaoJdbcImpl.insert(author);
-    author = authorDaoJdbcImpl.getByName(author.getAuthor());
-
-    assertEquals("SomeName", authorDaoJdbcImpl.getById(author.getId()).getAuthor());
-    authorDaoJdbcImpl.deleteById(author.getId());
-  }
 }
