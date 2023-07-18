@@ -34,11 +34,6 @@ public class BookServiceImpl implements BookService {
       log.error("DataBase is empty ");
       return null;
     }
-
-    for (Book book : list) {
-      book.setAuthor(authorService.getAuthorById(book.getAuthor().getId()));
-      book.setGenre(genreService.getById(book.getGenre().getId()));
-    }
     return list;
   }
 

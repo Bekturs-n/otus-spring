@@ -62,6 +62,7 @@ public class ApplicationShellComponent {
   public void removeBook(Long bookId) {
     bookService.deleteBookById(bookId);
   }
+
   @ShellMethod(value = "Get All", key = { "ga", "Get all" })
   public List<Book> getAll() {
     return bookService.getAll();

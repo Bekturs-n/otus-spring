@@ -22,6 +22,13 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class BookDaoImpl implements BookDaoJdbc {
 
+  private static final String QUERY_WITH_JOIN = "SELECT b.id, b.bookName, b.author_id, b.genre_id, "
+      + "a.id, a.author, a.surname, "
+      + "g.id, g.genre "
+      + "FROM books AS b "
+      + "JOIN authors AS a ON a.id = b.author_id "
+      + "JOIN genres AS g";
+
   private final NamedParameterJdbcOperations jdbc;
   private final AuthorDaoJdbc authorDaoJdbc;
   private final GenreDaoJdbc genreDaoJdbc;
@@ -49,7 +56,7 @@ public class BookDaoImpl implements BookDaoJdbc {
   public Book getById(long id) {
     Book book = null;
     try {
-      book = jdbc.queryForObject("SELECT b.id, b.bookName, b.author_id, b.genre_id FROM books AS b WHERE id = :id",
+      book = jdbc.queryForObject(QUERY_WITH_JOIN + " WHERE b.id = :id",
           Map.of("id", id), new BookMapper());
     } catch (EmptyResultDataAccessException e) {
     }
@@ -60,8 +67,7 @@ public class BookDaoImpl implements BookDaoJdbc {
   public Book getByName(String name) {
     Book book = null;
     try {
-      book = jdbc.queryForObject(
-          "SELECT b.id, b.bookName, b.author_id, b.genre_id FROM books as b WHERE bookName = :name",
+      book = jdbc.queryForObject(QUERY_WITH_JOIN + " WHERE bookName = :name",
           Map.of("name", name), new BookMapper());
     } catch (EmptyResultDataAccessException e) {
     }
@@ -72,13 +78,24 @@ public class BookDaoImpl implements BookDaoJdbc {
   public List<Book> getAll() {
     List<Book> list = null;
     try {
-      list = jdbc.query("SELECT b.id, b.bookName, b.author_id, b.genre_id FROM books AS b",
+      list = jdbc.query(QUERY_WITH_JOIN,
           (rs, rowNum) -> {
+            Author author = Author.builder()
+                .id(rs.getLong("authors.id"))
+                .author(rs.getString("author"))
+                .surname(rs.getString("surname")).build();
+
+            Genre genre = Genre.builder()
+                .id(rs.getLong("genres.id"))
+                .genre(rs.getString("genre"))
+                .build();
+
             Book book = new Book();
             book.setId(rs.getLong(1));
             book.setBookName(rs.getString(2));
-            book.setAuthor(Author.builder().id(Long.parseLong(rs.getString(3))).build());
-            book.setGenre(Genre.builder().id(Long.parseLong(rs.getString(4))).build());
+            book.setAuthor(author);
+            book.setGenre(genre);
+
             return book;
           });
     } catch (DataAccessException ignored) {
@@ -92,8 +109,16 @@ public class BookDaoImpl implements BookDaoJdbc {
     public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
       long id = rs.getLong("id");
       String bookName = rs.getString("bookName");
-      Author author = authorDaoJdbc.getById(rs.getLong("author_id"));
-      Genre genre = genreDaoJdbc.getById(rs.getLong("genre_id"));
+      Author author = Author.builder()
+          .id(rs.getLong("authors.id"))
+          .author(rs.getString("author"))
+          .surname(rs.getString("surname")).build();
+
+      Genre genre = Genre.builder()
+          .id(rs.getLong("genres.id"))
+          .genre(rs.getString("genre"))
+          .build();
+
       return new Book(id, bookName, author, genre);
     }
   }
