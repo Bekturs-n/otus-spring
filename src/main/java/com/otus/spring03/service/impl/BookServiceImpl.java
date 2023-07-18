@@ -38,12 +38,12 @@ public class BookServiceImpl implements BookService {
   }
 
   @Override
-  public Book getBookById(long id) {
+  public Book getBookBy(long id) {
     return bookDaoJdbc.getById(id);
   }
 
   @Override
-  public Book getBookByName(String name) {
+  public Book getBookBy(String name) {
     return bookDaoJdbc.getByName(name);
   }
 

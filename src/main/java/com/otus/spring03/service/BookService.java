@@ -10,9 +10,9 @@ public interface BookService {
 
   List<Book> getAll();
 
-  Book getBookById(long id);
+  Book getBookBy(long id);
 
-  Book getBookByName(String name);
+  Book getBookBy(String name);
 
   void updateBook(Integer bookId, String newBookName, String newAutorName, String newAuthorSurname,
       String newGenreName);

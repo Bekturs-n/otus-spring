@@ -5,11 +5,15 @@ import com.otus.spring03.model.Author;
 import com.otus.spring03.service.AuthorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.sql.DataSource;
 
 @Component
 @RequiredArgsConstructor
 public class AuthorServiceImpl implements AuthorService {
 
+  private final DataSource dataSource;
   private final AuthorDaoJdbc authorDaoJdbc;
 
   @Override
@@ -43,6 +47,7 @@ public class AuthorServiceImpl implements AuthorService {
   }
 
   @Override
+  @Transactional
   public Author getOrCreateAuthor(String authorName) {
     Author author = authorDaoJdbc.getByName(authorName);
     if (author == null) {

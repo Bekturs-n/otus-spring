@@ -41,7 +41,7 @@ public class ApplicationShellComponent {
 
   @ShellMethod(value = "Get book by name", key = { "gn", "getByName" })
   public String getBookByName(String bookName) {
-    Book book = bookService.getBookByName(bookName);
+    Book book = bookService.getBookBy(bookName);
     if (book == null) {
       return "No books with your conditions";
     }
@@ -51,7 +51,7 @@ public class ApplicationShellComponent {
 
   @ShellMethod(value = "Get book by id", key = { "g", "getId" })
   public String getBookById(Long bookId) {
-    Book book = bookService.getBookById(bookId);
+    Book book = bookService.getBookBy(bookId);
     if (book == null) {
       return "No books with your conditions";
     }

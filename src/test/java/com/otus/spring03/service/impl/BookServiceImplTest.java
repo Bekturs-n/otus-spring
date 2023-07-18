@@ -55,13 +55,13 @@ class BookServiceImplTest {
   @Test
   void getBookById() {
     when(bookDaoJdbc.getById(1)).thenReturn(book);
-    assertEquals(book, bookService.getBookById(1));
+    assertEquals(book, bookService.getBookBy(1));
   }
 
   @Test
   void getBookByName() {
     when(bookDaoJdbc.getByName("Book")).thenReturn(book);
-    assertEquals(book, bookService.getBookByName("Book"));
+    assertEquals(book, bookService.getBookBy("Book"));
   }
 
   @Test
