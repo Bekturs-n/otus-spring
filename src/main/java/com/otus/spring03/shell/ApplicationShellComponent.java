@@ -18,8 +18,6 @@ import java.util.List;
 public class ApplicationShellComponent {
 
   private final BookService bookService;
-  private final AuthorService authorService;
-  private final GenreService genreService;
 
   private String login;
   private String pass;
@@ -33,7 +31,6 @@ public class ApplicationShellComponent {
 
   @ShellMethod(value = "Add book", key = { "a", "add" })
   public String addNewBook(String bookName, String authorName, String comment, String[] genreNames) {
-    authorService.getOrCreateAuthor("Alexandre");
     return bookService.checkAndSave(bookName, authorName, comment, genreNames);
   }
 
