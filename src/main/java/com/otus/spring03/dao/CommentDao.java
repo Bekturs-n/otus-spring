@@ -1,13 +1,8 @@
 package com.otus.spring03.dao;
 
 import com.otus.spring03.model.Comment;
+import org.springframework.data.repository.CrudRepository;
 
-public interface CommentDao {
-  Comment insert(Comment comment);
+public interface CommentDao extends CrudRepository<Comment, Long> {
 
-  void delete(Comment comment);
-
-  void update(Comment comment);
-
-  Comment findById(long id);
 }

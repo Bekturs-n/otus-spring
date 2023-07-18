@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Log4j2
 @Component
 @RequiredArgsConstructor
@@ -18,7 +20,7 @@ public class CommentServiceImpl implements CommentService {
   @Override
   @Transactional
   public Comment save(Comment comment) {
-    return commentDao.insert(comment);
+    return commentDao.save(comment);
   }
 
   @Override
@@ -30,16 +32,33 @@ public class CommentServiceImpl implements CommentService {
   @Override
   @Transactional
   public void update(Comment comment) {
-    commentDao.update(comment);
+    Optional<Comment> optional = commentDao.findById(comment.getId());
+    if (optional.isEmpty()) {
+      log.error("No author with this credential");
+      return;
+    }
+
+    Comment commentForUpdate = optional.get();
+    copyField(comment, commentForUpdate);
+    commentDao.save(commentForUpdate);
   }
 
   @Override
   @Transactional
   public Comment findBy(long id) {
-    Comment comment = commentDao.findById(id);
-    if (comment == null) {
+    Optional<Comment> comment = commentDao.findById(id);
+    if (comment.isEmpty()) {
       log.info("No comment with this credentials");
     }
-    return comment;
+    return comment.get();
+  }
+
+  private void copyField(Comment from, Comment to) {
+    if (from.getComment() != null) {
+      to.setComment(from.getComment());
+    }
+    if (from.getBook() != null) {
+      to.setBook(from.getBook());
+    }
   }
 }

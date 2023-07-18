@@ -1,21 +1,16 @@
 package com.otus.spring03.dao;
 
 import com.otus.spring03.model.Author;
+import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface AuthorDao {
+public interface AuthorDao extends CrudRepository<Author, Long> {
 
-  Author insert(Author author);
-
-  Optional<Author> findById(long id);
-
-  Optional<Author> findByName(String id);
-
-  void delete(Author author);
-
-  void update(Author author);
-
+  @Override
   List<Author> findAll();
+
+  Optional<Author> findByAuthor(String authorName);
+
 }

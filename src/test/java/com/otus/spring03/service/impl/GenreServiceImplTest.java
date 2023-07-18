@@ -67,21 +67,4 @@ class GenreServiceImplTest {
     verify(genreDaoJdbcImpl).delete(any());
   }
 
-  @Test
-  void getOrCreateGenreWhenGenreContains() {
-    Genre genre = new Genre();
-    when(genreDaoJdbcImpl.findByName(anyString())).thenReturn(genre);
-    assertEquals(genre, genreService.getOrCreateGenre(anyString()));
-    verify(genreDaoJdbcImpl).findByName(anyString());
-  }
-
-  @Test
-  void getOrCreateGenreWhenGenreNotContains() {
-    Genre genre = Genre.builder().genre("Genre").build();
-
-    when(genreDaoJdbcImpl.findByName(genre.getGenre())).thenThrow(EmptyResultDataAccessException.class);
-    when(genreDaoJdbcImpl.insert(any())).thenReturn(genre);
-
-    assertEquals(genre.getGenre(), genreService.getOrCreateGenre(genre.getGenre()).getGenre());
-  }
 }

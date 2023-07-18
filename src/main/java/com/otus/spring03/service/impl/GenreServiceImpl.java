@@ -28,7 +28,7 @@ public class GenreServiceImpl implements GenreService {
   @Override
   @Transactional
   public void save(Genre genre) {
-    genreDaoJdbc.insert(genre);
+    genreDaoJdbc.save(genre);
   }
 
   @Override
@@ -39,50 +39,37 @@ public class GenreServiceImpl implements GenreService {
       log.info("No genre with this credentials");
       return null;
     }
-
     return optionalGenre.get();
   }
 
   @Override
   @Transactional
   public Genre getBy(String genreName) {
-    Genre genre;
-    try {
-      genre = genreDaoJdbc.findByName(genreName);
-    } catch (EmptyResultDataAccessException e) {
+    Optional<Genre> genre = genreDaoJdbc.findByGenre(genreName);
+    if (genre.isEmpty()) {
       log.info("No genre with this credentials");
       return null;
     }
-    return genre;
+    return genre.get();
   }
 
   @Override
   @Transactional
   public void update(Genre genre) {
-    genreDaoJdbc.update(genre);
+    Optional<Genre> optional = genreDaoJdbc.findById(genre.getId());
+    if (optional.isEmpty()) {
+      log.warn("No genre");
+      return;
+    }
+    Genre genreForUpdate = optional.get();
+    genreForUpdate.setGenre(genre.getGenre());
+    genreDaoJdbc.save(genreForUpdate);
   }
 
   @Override
   @Transactional
   public void removeBy(long id) {
-    Optional<Genre> optionalGenre = genreDaoJdbc.findById(id);
-    if (optionalGenre.isEmpty()) {
-      log.info("No genre with this credentials, nothing has been deleted");
-      return;
-    }
-    genreDaoJdbc.delete(optionalGenre.get());
-  }
-
-  @Override
-  @Transactional
-  public Genre getOrCreateGenre(String genreName) {
-    Genre genre;
-    try {
-      genre = genreDaoJdbc.findByName(genreName);
-    } catch (EmptyResultDataAccessException e) {
-      return genreDaoJdbc.insert(Genre.builder().genre(genreName).build());
-    }
-    return genre;
+    genreDaoJdbc.deleteById(id);
   }
 
   @Override
@@ -95,12 +82,9 @@ public class GenreServiceImpl implements GenreService {
   @Transactional
   public void saveMoreByName(List<Genre> genreList) {
     for (Genre genre : genreList) {
-      try {
-        Genre genreFromDB = genreDaoJdbc.findByName(genre.getGenre());
-        genreFromDB.setGenre(genre.getGenre());
-        genreDaoJdbc.update(genreFromDB);
-      } catch (EmptyResultDataAccessException e) {
-        genreDaoJdbc.insert(genre);
+      Optional<Genre> genreFromDB = genreDaoJdbc.findByGenre(genre.getGenre());
+      if (genreFromDB.isEmpty()) {
+        genreDaoJdbc.save(genre);
       }
     }
   }

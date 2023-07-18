@@ -11,7 +11,7 @@ public interface BookService {
 
   Book getBy(long id);
 
-  void updateBook(Integer bookId, String newBookName);
+  void updateBook(long bookId, String newBookName);
 
   void removeBy(long id);
 

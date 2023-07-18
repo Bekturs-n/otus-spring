@@ -12,7 +12,6 @@ import com.otus.spring03.service.GenreService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -32,7 +31,7 @@ public class BookServiceImpl implements BookService {
   @Override
   @Transactional
   public Book save(Book book) {
-    return bookDaoJdbc.insert(book);
+    return bookDaoJdbc.save(book);
   }
 
   @Override
@@ -60,7 +59,7 @@ public class BookServiceImpl implements BookService {
 
   @Override
   @Transactional
-  public void updateBook(Integer bookId, String newBookName) {
+  public void updateBook(long bookId, String newBookName) {
     Optional<Book> optionalBook = bookDaoJdbc.findById(bookId);
     if (optionalBook.isEmpty()) {
       log.error("No book with this ID in Database, please write correct id");
@@ -68,52 +67,46 @@ public class BookServiceImpl implements BookService {
     }
     Book book = optionalBook.get();
     book.setBookName(newBookName);
-    bookDaoJdbc.update(book);
+    bookDaoJdbc.save(book);
   }
 
   @Override
   @Transactional
   public void removeBy(long id) {
-    Optional<Book> optionalBook = bookDaoJdbc.findById(id);
-    if (optionalBook.isEmpty()) {
-      log.info("No book with this credentials, nothing has been deleted");
-      return;
-    }
-    bookDaoJdbc.delete(optionalBook.get());
+    bookDaoJdbc.deleteById(id);
   }
 
   @Override
   @Transactional
-  public Book getByName(String name) {
-    Book book = null;
-    try {
-      book = bookDaoJdbc.findByName(name);
-      return book;
-    } catch (EmptyResultDataAccessException e) {
+  public Book getByName(String bookName) {
+    Optional<Book> book = bookDaoJdbc.findByBookName(bookName);
+    if (book.isEmpty()) {
       log.info("No book with this credentials");
+      return null;
     }
-    return book;
+
+    return book.get();
   }
 
   @Override
   @Transactional
   public String checkAndSave(String bookName, String authorName, String commentString, String[] genreNames) {
-    try {
-      bookDaoJdbc.findByName(bookName);
+    Optional<Book> optionalBook = bookDaoJdbc.findByBookName(bookName);
+    if (optionalBook.isPresent()) {
+      log.info("We have book with this credentials");
       return "This book we have in DB";
-    } catch (EmptyResultDataAccessException e) {
-      List<Genre> genres = Arrays.stream(genreNames).map(elem -> Genre.builder().genre(elem).build()).toList();
-      genreService.saveMoreByName(genres);
-
-      Author author = Author.builder().author(authorName).build();
-      author = authorService.save(author);
-
-      Book book = Book.builder().genre(genres).bookName(bookName).author(author).build();
-      book = this.save(book);
-
-      Comment comment = Comment.builder().comment(commentString).book(book).build();
-      commentService.save(comment);
     }
+    List<Genre> genres = Arrays.stream(genreNames).map(elem -> Genre.builder().genre(elem).build()).toList();
+    genreService.saveMoreByName(genres);
+
+    Author author = Author.builder().author(authorName).build();
+    author = authorService.save(author);
+
+    Book book = Book.builder().genre(genres).bookName(bookName).author(author).build();
+    book = bookDaoJdbc.save(book);
+
+    Comment comment = Comment.builder().comment(commentString).book(book).build();
+    commentService.save(comment);
     return "New book saved ";
   }
 }

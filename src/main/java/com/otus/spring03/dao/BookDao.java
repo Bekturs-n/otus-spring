@@ -1,20 +1,16 @@
 package com.otus.spring03.dao;
 
 import com.otus.spring03.model.Book;
+import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface BookDao {
-  Book insert(Book book);
+public interface BookDao extends CrudRepository<Book, Long> {
 
-  Optional<Book> findById(long id);
-
-  Book findByName(String name);
-
-  Book update(Book book);
-
-  void delete(Book book);
-
+  @Override
   List<Book> findAll();
+
+  Optional<Book> findByBookName(String name);
+
 }

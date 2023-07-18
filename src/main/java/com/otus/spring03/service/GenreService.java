@@ -17,8 +17,6 @@ public interface GenreService {
 
   void removeBy(long id);
 
-  Genre getOrCreateGenre(String genreName);
-
   List<Genre> getAll();
 
   void saveMoreByName(List<Genre> genre);

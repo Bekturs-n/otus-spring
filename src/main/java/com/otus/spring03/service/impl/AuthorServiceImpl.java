@@ -39,13 +39,21 @@ public class AuthorServiceImpl implements AuthorService {
   @Override
   @Transactional
   public void update(Author author) {
-    authorDaoJdbc.update(author);
+    Optional<Author> optionalAuthor = authorDaoJdbc.findById(author.getId());
+    if (optionalAuthor.isEmpty()) {
+      log.error("No author with this credential");
+      return;
+    }
+
+    Author authorForUpdate = optionalAuthor.get();
+    copyField(author, authorForUpdate);
+    authorDaoJdbc.save(authorForUpdate);
   }
 
   @Override
   @Transactional
   public Author save(Author author) {
-    return authorDaoJdbc.insert(author);
+    return authorDaoJdbc.save(author);
   }
 
   @Transactional
@@ -66,7 +74,20 @@ public class AuthorServiceImpl implements AuthorService {
   @Override
   @Transactional
   public Author getOrCreateAuthor(String authorName) {
-    Optional<Author> optionalAuthor = authorDaoJdbc.findByName(authorName);
-    return optionalAuthor.orElseGet(() -> authorDaoJdbc.insert(Author.builder().author(authorName).build()));
+    Optional<Author> optionalAuthor = authorDaoJdbc.findByAuthor(authorName);
+    return optionalAuthor.orElseGet(() -> authorDaoJdbc.save(Author.builder().author(authorName).build()));
   }
+
+  private void copyField(Author from, Author to) {
+    if (from.getSurname() != null) {
+      to.setSurname(from.getSurname());
+    }
+    if (from.getAuthor() != null) {
+      to.setAuthor(from.getAuthor());
+    }
+    if (from.getBooks() != null && !from.getBooks().isEmpty()) {
+      to.setBooks(from.getBooks());
+    }
+  }
+
 }
