@@ -11,7 +11,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-//Это ж уже интеграционное тестирование
+//Это ж уже интеграционное тестирование???
 @DataMongoTest
 @ExtendWith(SpringExtension.class)
 class AuthorDaoTest {
