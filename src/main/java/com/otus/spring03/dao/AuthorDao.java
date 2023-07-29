@@ -13,4 +13,6 @@ public interface AuthorDao extends CrudRepository<Author, Long> {
 
   Optional<Author> findByAuthor(String authorName);
 
+  Author findFirstByOrderByIdDesc();
+
 }

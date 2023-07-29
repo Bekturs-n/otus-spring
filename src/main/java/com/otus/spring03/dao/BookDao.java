@@ -13,4 +13,8 @@ public interface BookDao extends CrudRepository<Book, Long> {
 
   Optional<Book> findByBookName(String name);
 
+  Book findFirstByOrderByIdDesc();
+
+  List<Book> findBookByAuthor_Author(String authorName);
+
 }

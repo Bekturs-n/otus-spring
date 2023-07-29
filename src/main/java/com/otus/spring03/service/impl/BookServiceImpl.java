@@ -9,14 +9,16 @@ import com.otus.spring03.service.AuthorService;
 import com.otus.spring03.service.BookService;
 import com.otus.spring03.service.CommentService;
 import com.otus.spring03.service.GenreService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -29,13 +31,13 @@ public class BookServiceImpl implements BookService {
   private final CommentService commentService;
 
   @Override
-  @Transactional
-  public Book save(Book book) {
+  public Book save(String bookName) {
+    Book book = Book.builder().bookName(bookName).build();
+    book.setId(getNextId());
     return bookDaoJdbc.save(book);
   }
 
   @Override
-  @Transactional
   public List<Book> getAll() {
     List<Book> list = bookDaoJdbc.findAll();
     if (list == null) {
@@ -46,7 +48,6 @@ public class BookServiceImpl implements BookService {
   }
 
   @Override
-  @Transactional
   public Book getBy(long id) {
     Optional<Book> book = bookDaoJdbc.findById(id);
     if (book.isPresent()) {
@@ -58,9 +59,8 @@ public class BookServiceImpl implements BookService {
   }
 
   @Override
-  @Transactional
-  public void updateBook(long bookId, String newBookName) {
-    Optional<Book> optionalBook = bookDaoJdbc.findById(bookId);
+  public void updateBook(String oldBookName, String newBookName) {
+    Optional<Book> optionalBook = bookDaoJdbc.findByBookName(oldBookName);
     if (optionalBook.isEmpty()) {
       log.error("No book with this ID in Database, please write correct id");
       return;
@@ -71,13 +71,11 @@ public class BookServiceImpl implements BookService {
   }
 
   @Override
-  @Transactional
   public void removeBy(long id) {
     bookDaoJdbc.deleteById(id);
   }
 
   @Override
-  @Transactional
   public Book getByName(String bookName) {
     Optional<Book> book = bookDaoJdbc.findByBookName(bookName);
     if (book.isEmpty()) {
@@ -89,24 +87,55 @@ public class BookServiceImpl implements BookService {
   }
 
   @Override
-  @Transactional
+  public List<Book> getByGenre(String genreName) {
+    Genre genre = genreService.getBy(genreName);
+    if (genre == null) {
+      log.warn("Nothing with this credentials");
+      return Collections.emptyList();
+    }
+    return bookDaoJdbc.findAll().stream().filter(book -> book.getGenreIds().contains(genre.getId())).toList();
+  }
+
+  @Override
+  public List<Book> getByAuthor(String authorName) {
+    List<Book> books = bookDaoJdbc.findBookByAuthor_Author(authorName);
+    if (books == null) {
+      log.warn("Nothing with this credentials");
+      return Collections.emptyList();
+    }
+    return bookDaoJdbc.findBookByAuthor_Author(authorName);
+  }
+
+  @Override
   public String checkAndSave(String bookName, String authorName, String commentString, String[] genreNames) {
     Optional<Book> optionalBook = bookDaoJdbc.findByBookName(bookName);
     if (optionalBook.isPresent()) {
-      log.info("We have book with this credentials");
+      log.info("We have book in library with this credentials");
       return "This book we have in DB";
     }
     List<Genre> genres = Arrays.stream(genreNames).map(elem -> Genre.builder().genre(elem).build()).toList();
     genreService.saveMoreByName(genres);
 
-    Author author = Author.builder().author(authorName).build();
-    author = authorService.save(author);
+    Author author = authorService.getOrCreateAuthor(authorName);
 
-    Book book = Book.builder().genre(genres).bookName(bookName).author(author).build();
+    Book book = Book.builder().build();
+    List<Long> genreList = new ArrayList<>();
+    for (Genre genre : genres) {
+      genreList.add(genreService.getBy(genre.getGenre()).getId());
+    }
+    book.setBookName(bookName);
+    book.setAuthor(author);
+    book.setGenreIds(genreList);
+    book.setId(getNextId());
     book = bookDaoJdbc.save(book);
 
-    Comment comment = Comment.builder().comment(commentString).book(book).build();
+    Comment comment = Comment.builder().comment(commentString).bookId(book.getId()).build();
     commentService.save(comment);
     return "New book saved ";
+  }
+
+  private long getNextId() {
+    Book book = bookDaoJdbc.findFirstByOrderByIdDesc();
+    return book == null ? 1 : book.getId() + 1;
   }
 }

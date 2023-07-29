@@ -5,6 +5,8 @@ import com.otus.spring03.model.Author;
 public interface AuthorService {
   Author getAuthorBy(long id);
 
+  Author getAuthorBy(String authorName);
+
   Long getCount();
 
   void update(Author author);

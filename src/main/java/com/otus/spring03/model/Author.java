@@ -1,18 +1,13 @@
 package com.otus.spring03.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.NamedQuery;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
@@ -21,24 +16,16 @@ import java.util.List;
  */
 @Getter
 @Setter
-@Entity
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "authors")
-@NamedQuery(name = "getAll", query = "select a from Author a")
+@Document(collection = "author")
 public class Author {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
-
-  @Column
   private String author;
-
-  @Column
   private String surname;
 
-  @OneToMany(mappedBy = "author")
-  private List<Book> books;
 }

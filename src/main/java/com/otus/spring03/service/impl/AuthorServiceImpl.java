@@ -3,7 +3,6 @@ package com.otus.spring03.service.impl;
 import com.otus.spring03.dao.AuthorDao;
 import com.otus.spring03.model.Author;
 import com.otus.spring03.service.AuthorService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
@@ -18,7 +17,6 @@ public class AuthorServiceImpl implements AuthorService {
   private final AuthorDao authorDaoJdbc;
 
   @Override
-  @Transactional
   public Author getAuthorBy(long id) {
     Optional<Author> author = authorDaoJdbc.findById(id);
 
@@ -31,13 +29,23 @@ public class AuthorServiceImpl implements AuthorService {
   }
 
   @Override
-  @Transactional
+  public Author getAuthorBy(String authorName) {
+    Optional<Author> author = authorDaoJdbc.findByAuthor(authorName);
+
+    if (author.isPresent()) {
+      return author.get();
+    } else {
+      log.info("No author with this credentials");
+      return null;
+    }
+  }
+
+  @Override
   public Long getCount() {
     return (long) authorDaoJdbc.findAll().size();
   }
 
   @Override
-  @Transactional
   public void update(Author author) {
     Optional<Author> optionalAuthor = authorDaoJdbc.findById(author.getId());
     if (optionalAuthor.isEmpty()) {
@@ -51,19 +59,17 @@ public class AuthorServiceImpl implements AuthorService {
   }
 
   @Override
-  @Transactional
   public Author save(Author author) {
+    author.setId(getNextId());
     return authorDaoJdbc.save(author);
   }
 
-  @Transactional
   @Override
   public void remove(Author author) {
     authorDaoJdbc.delete(author);
   }
 
   @Override
-  @Transactional
   public void removeBy(long id) {
     Author author = getAuthorBy(id);
     if (author != null) {
@@ -72,10 +78,9 @@ public class AuthorServiceImpl implements AuthorService {
   }
 
   @Override
-  @Transactional
   public Author getOrCreateAuthor(String authorName) {
     Optional<Author> optionalAuthor = authorDaoJdbc.findByAuthor(authorName);
-    return optionalAuthor.orElseGet(() -> authorDaoJdbc.save(Author.builder().author(authorName).build()));
+    return optionalAuthor.orElseGet(() -> this.save(Author.builder().author(authorName).build()));
   }
 
   private void copyField(Author from, Author to) {
@@ -85,9 +90,10 @@ public class AuthorServiceImpl implements AuthorService {
     if (from.getAuthor() != null) {
       to.setAuthor(from.getAuthor());
     }
-    if (from.getBooks() != null && !from.getBooks().isEmpty()) {
-      to.setBooks(from.getBooks());
-    }
   }
 
+  private long getNextId() {
+    Author author = authorDaoJdbc.findFirstByOrderByIdDesc();
+    return author == null ? 1 : author.getId() + 1;
+  }
 }

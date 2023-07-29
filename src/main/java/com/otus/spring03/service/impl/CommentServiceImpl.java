@@ -2,8 +2,8 @@ package com.otus.spring03.service.impl;
 
 import com.otus.spring03.dao.CommentDao;
 import com.otus.spring03.model.Comment;
+import com.otus.spring03.model.Genre;
 import com.otus.spring03.service.CommentService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
@@ -18,19 +18,20 @@ public class CommentServiceImpl implements CommentService {
   private final CommentDao commentDao;
 
   @Override
-  @Transactional
+
   public Comment save(Comment comment) {
+    comment.setId(getNextId());
     return commentDao.save(comment);
   }
 
   @Override
-  @Transactional
+
   public void remove(Comment comment) {
     commentDao.delete(comment);
   }
 
   @Override
-  @Transactional
+
   public void update(Comment comment) {
     Optional<Comment> optional = commentDao.findById(comment.getId());
     if (optional.isEmpty()) {
@@ -44,7 +45,7 @@ public class CommentServiceImpl implements CommentService {
   }
 
   @Override
-  @Transactional
+
   public Comment findBy(long id) {
     Optional<Comment> comment = commentDao.findById(id);
     if (comment.isEmpty()) {
@@ -57,8 +58,13 @@ public class CommentServiceImpl implements CommentService {
     if (from.getComment() != null) {
       to.setComment(from.getComment());
     }
-    if (from.getBook() != null) {
-      to.setBook(from.getBook());
+    if (from.getBookId() != null) {
+      to.setBookId(from.getBookId());
     }
+  }
+
+  private long getNextId() {
+    Comment comment = commentDao.findFirstByOrderByIdDesc();
+    return comment == null ? 1 : comment.getId() + 1;
   }
 }
