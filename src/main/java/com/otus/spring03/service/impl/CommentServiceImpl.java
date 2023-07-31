@@ -2,7 +2,6 @@ package com.otus.spring03.service.impl;
 
 import com.otus.spring03.dao.CommentDao;
 import com.otus.spring03.model.Comment;
-import com.otus.spring03.model.Genre;
 import com.otus.spring03.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

@@ -1,6 +1,5 @@
 package com.otus.spring03.service;
 
-import com.otus.spring03.model.Author;
 import com.otus.spring03.model.Book;
 
 import java.util.List;

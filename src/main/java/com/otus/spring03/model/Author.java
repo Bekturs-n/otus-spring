@@ -9,8 +9,6 @@ import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
-
 /**
  * More about lombok @see <a href="https://habr.com/ru/companies/haulmont/articles/564682/">Lombok with JPA</a>
  */
