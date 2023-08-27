@@ -29,13 +29,11 @@ public class BookServiceImpl implements BookService {
   private final CommentService commentService;
 
   @Override
-  @Transactional
   public Book save(Book book) {
     return bookDaoJdbc.save(book);
   }
 
   @Override
-  @Transactional
   public List<Book> getAll() {
     List<Book> list = bookDaoJdbc.findAll();
     if (list == null) {
@@ -46,7 +44,6 @@ public class BookServiceImpl implements BookService {
   }
 
   @Override
-  @Transactional
   public Book getBy(long id) {
     Optional<Book> book = bookDaoJdbc.findById(id);
     if (book.isPresent()) {
@@ -58,7 +55,6 @@ public class BookServiceImpl implements BookService {
   }
 
   @Override
-  @Transactional
   public void updateBook(long bookId, String newBookName) {
     Optional<Book> optionalBook = bookDaoJdbc.findById(bookId);
     if (optionalBook.isEmpty()) {
@@ -71,13 +67,11 @@ public class BookServiceImpl implements BookService {
   }
 
   @Override
-  @Transactional
   public void removeBy(long id) {
     bookDaoJdbc.deleteById(id);
   }
 
   @Override
-  @Transactional
   public Book getByName(String bookName) {
     Optional<Book> book = bookDaoJdbc.findByBookName(bookName);
     if (book.isEmpty()) {
