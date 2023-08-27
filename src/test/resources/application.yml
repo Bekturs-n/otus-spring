@@ -1,0 +1,20 @@
+spring:
+  data:
+    mongodb:
+      database: library
+      authentication-database: admin
+
+#for logging mongodb queries
+logging:
+  level:
+    org.springframework.data.mongodb.core.MongoTemplate: Debug
+
+#типо liquibase'а
+mongock:
+  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - com.otus.spring03.mongock.changelog
+  mongo-db:
+    write-concern:
+      journal: false
+    read-concern: local
