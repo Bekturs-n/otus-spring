@@ -6,12 +6,14 @@ import jakarta.persistence.EntityGraph;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+@Component
 public class BookDaoImpl implements BookDao {
 
   @PersistenceContext
@@ -38,11 +40,17 @@ public class BookDaoImpl implements BookDao {
 
   @Override
   public Book findByName(String name) {
-    EntityGraph<?> eg = em.getEntityGraph("book-genre-eg");
-    TypedQuery<Book> tq = em.createQuery("SELECT b FROM Book b WHERE b.bookName = :name", Book.class);
-    tq.setParameter("name", name);
-    tq.setHint("jakarta.persistence.fetchgraph", eg);
-    return tq.getSingleResult();
+    Book book;
+    try {
+      EntityGraph<?> eg = em.getEntityGraph("book-genre-eg");
+      TypedQuery<Book> tq = em.createQuery("SELECT b FROM Book b WHERE b.bookName = :name", Book.class);
+      tq.setParameter("name", name);
+      tq.setHint("jakarta.persistence.fetchgraph", eg);
+      book = tq.getSingleResult();
+    } catch (EmptyResultDataAccessException e) {
+      return null;
+    }
+    return book;
   }
 
   @Override

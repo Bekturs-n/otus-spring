@@ -20,6 +20,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cache;
 
 import java.util.List;
 
@@ -51,6 +52,6 @@ public class Book {
   @JoinColumn(name = "author_id")
   private Author author;
 
-  @OneToMany(mappedBy = "book", targetEntity = Comment.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+  @OneToMany(mappedBy = "book", targetEntity = Comment.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
   private List<Comment> comments;
 }

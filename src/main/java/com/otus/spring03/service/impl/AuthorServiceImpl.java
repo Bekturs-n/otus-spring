@@ -18,7 +18,6 @@ public class AuthorServiceImpl implements AuthorService {
   private final AuthorDao authorDaoJdbc;
 
   @Override
-  @Transactional
   public Author getAuthorBy(long id) {
     Optional<Author> author = authorDaoJdbc.findById(id);
 
@@ -31,7 +30,6 @@ public class AuthorServiceImpl implements AuthorService {
   }
 
   @Override
-  @Transactional
   public Long getCount() {
     return (long) authorDaoJdbc.findAll().size();
   }

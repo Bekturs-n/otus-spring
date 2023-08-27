@@ -5,12 +5,13 @@ import com.otus.spring03.model.Genre;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+@Component
 public class GenreDaoImpl implements GenreDao {
 
   @PersistenceContext

@@ -1,9 +1,9 @@
 package com.otus.spring03.shell;
 
 import com.otus.spring03.model.Book;
-import com.otus.spring03.service.AuthorService;
+import com.otus.spring03.model.Comment;
 import com.otus.spring03.service.BookService;
-import com.otus.spring03.service.GenreService;
+import com.otus.spring03.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.shell.Availability;
@@ -18,6 +18,7 @@ import java.util.List;
 public class ApplicationShellComponent {
 
   private final BookService bookService;
+  private final CommentService commentService;
 
   private String login;
   private String pass;
@@ -59,6 +60,11 @@ public class ApplicationShellComponent {
   @ShellMethod(value = "Get All", key = { "ga", "Get all" })
   public List<Book> getAll() {
     return bookService.getAll();
+  }
+
+  @ShellMethod(value = "Get comment by book id", key = { "gc", "Get comment by book id" })
+  public List<Comment> getCommentsByBookId(long id) {
+    return commentService.getCommentsByBookId(id);
   }
 
   private Availability isUserNameNotNull() {

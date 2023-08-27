@@ -20,7 +20,6 @@ public class GenreServiceImpl implements GenreService {
   private final GenreDao genreDaoJdbc;
 
   @Override
-  @Transactional
   public long count() {
     return genreDaoJdbc.findAll().size();
   }
@@ -32,7 +31,6 @@ public class GenreServiceImpl implements GenreService {
   }
 
   @Override
-  @Transactional
   public Genre getBy(long id) {
     Optional<Genre> optionalGenre = genreDaoJdbc.findById(id);
     if (optionalGenre.isEmpty()) {
@@ -44,7 +42,6 @@ public class GenreServiceImpl implements GenreService {
   }
 
   @Override
-  @Transactional
   public Genre getBy(String genreName) {
     Genre genre;
     try {
@@ -86,7 +83,6 @@ public class GenreServiceImpl implements GenreService {
   }
 
   @Override
-  @Transactional
   public List<Genre> getAll() {
     return genreDaoJdbc.findAll();
   }

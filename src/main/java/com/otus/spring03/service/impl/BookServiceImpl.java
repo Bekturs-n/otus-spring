@@ -36,7 +36,6 @@ public class BookServiceImpl implements BookService {
   }
 
   @Override
-  @Transactional
   public List<Book> getAll() {
     List<Book> list = bookDaoJdbc.findAll();
     if (list == null) {
@@ -47,7 +46,6 @@ public class BookServiceImpl implements BookService {
   }
 
   @Override
-  @Transactional
   public Book getBy(long id) {
     Optional<Book> book = bookDaoJdbc.findById(id);
     if (book.isPresent()) {
@@ -83,7 +81,6 @@ public class BookServiceImpl implements BookService {
   }
 
   @Override
-  @Transactional
   public Book getByName(String name) {
     Book book = null;
     try {
@@ -98,22 +95,22 @@ public class BookServiceImpl implements BookService {
   @Override
   @Transactional
   public String checkAndSave(String bookName, String authorName, String commentString, String[] genreNames) {
-    try {
-      bookDaoJdbc.findByName(bookName);
-      return "This book we have in DB";
-    } catch (EmptyResultDataAccessException e) {
-      List<Genre> genres = Arrays.stream(genreNames).map(elem -> Genre.builder().genre(elem).build()).toList();
-      genreService.saveMoreByName(genres);
-
-      Author author = Author.builder().author(authorName).build();
-      author = authorService.save(author);
-
-      Book book = Book.builder().genre(genres).bookName(bookName).author(author).build();
-      book = this.save(book);
-
-      Comment comment = Comment.builder().comment(commentString).book(book).build();
-      commentService.save(comment);
+    if (bookDaoJdbc.findByName(bookName) != null) {
+        return "This book we have in DB";
     }
+
+    List<Genre> genres = Arrays.stream(genreNames).map(elem -> Genre.builder().genre(elem).build()).toList();
+    genreService.saveMoreByName(genres);
+
+    Author author = Author.builder().author(authorName).build();
+    author = authorService.save(author);
+
+    Book book = Book.builder().genre(genres).bookName(bookName).author(author).build();
+    book = this.save(book);
+
+    Comment comment = Comment.builder().comment(commentString).book(book).build();
+    commentService.save(comment);
+
     return "New book saved ";
   }
 }

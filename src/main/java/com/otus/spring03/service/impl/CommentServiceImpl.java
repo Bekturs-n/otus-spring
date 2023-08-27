@@ -1,12 +1,18 @@
 package com.otus.spring03.service.impl;
 
 import com.otus.spring03.dao.CommentDao;
+import com.otus.spring03.model.Book;
 import com.otus.spring03.model.Comment;
+import com.otus.spring03.service.BookService;
 import com.otus.spring03.service.CommentService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Log4j2
 @Component
@@ -34,7 +40,6 @@ public class CommentServiceImpl implements CommentService {
   }
 
   @Override
-  @Transactional
   public Comment findBy(long id) {
     Comment comment = commentDao.findById(id);
     if (comment == null) {
@@ -42,4 +47,10 @@ public class CommentServiceImpl implements CommentService {
     }
     return comment;
   }
+  @Override
+  @Transactional
+  public List<Comment> getCommentsByBookId(long bookId) {
+    return commentDao.findByBookId(bookId);
+  }
+
 }

@@ -1,12 +1,16 @@
 package com.otus.spring03.dao.impl;
 
 import com.otus.spring03.dao.CommentDao;
+import com.otus.spring03.model.Book;
 import com.otus.spring03.model.Comment;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-@Repository
+import java.util.List;
+
+@Component
 public class CommentDaoImpl implements CommentDao {
 
   @PersistenceContext
@@ -35,5 +39,11 @@ public class CommentDaoImpl implements CommentDao {
   @Override
   public Comment findById(long id) {
     return em.find(Comment.class, id);
+  }
+
+  @Override
+  public List<Comment> findByBookId(long id) {
+    return em.createQuery("SELECT c FROM Comment AS c JOIN FETCH c.book WHERE c.book.id=:id", Comment.class)
+            .setParameter("id", id).getResultList();
   }
 }
