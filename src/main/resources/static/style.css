@@ -1,0 +1,107 @@
+body {
+    color: #8f8f8f;
+    font: 12px Tahoma, sans-serif;
+    background-color: #f8f8f8;
+    border-top: 5px solid #7e7e7e;
+    margin: 0;
+}
+input[type="text"] {
+    background-color: #f3f3f3;
+    border: 1px solid #e7e7e7;
+    height: 30px;
+    color: black;
+    padding: 0 10px;
+    vertical-align: top;
+}
+button {
+    color: #fff;
+    background-color: #29c5e6;
+    border: none;
+    height: 32px;
+    font-family: 'Oswald', sans-serif;
+}
+
+p {
+    margin: 20px 0;
+    color: black;
+}
+/* основной контент */
+#wrapper {
+    max-width: 80%;
+    margin: auto;
+}
+header {
+    padding: 20px 0;
+}
+
+nav a {
+    text-decoration: none;
+}
+
+/* навигационная панель */
+nav ul {
+    margin: 0;
+    padding: 0;
+}
+
+nav li {
+    list-style-position: inside;
+    font: 14px 'Oswald', sans-serif;
+    padding: 10px;
+}
+
+.top-menu li {
+    display: inline-block;
+    padding: 20px 50px;
+    margin: 0;
+}
+
+.top-menu li.active {
+    background: #29c5e6;
+    color: #fff;
+}
+
+.top-menu a {
+    color: #757474;
+}
+
+blockquote {
+    margin: 0;
+    background: #29c5e6;
+    padding: 10px 20px;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 300;
+}
+
+blockquote p {
+    color: #fff;
+    font-style: italic;
+    font-size: 33px;
+    margin: 0;
+}
+
+blockquote cite {
+    display: block;
+    font-size: 20px;
+    font-style: normal;
+    color: #1d8ea6;
+    margin: 0;
+    text-align: right;
+}
+
+form {
+    margin: auto;
+    width:500px;
+}
+
+table {
+    padding-top: 50px;
+    margin: auto;
+    width:500px;
+}
+
+table thead tr td {
+    color: black;
+    font-size:20pt;
+    padding-left: 20px;
+}

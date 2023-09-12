@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <title>Whitesquare</title>
+    <link rel="stylesheet" href="/style.css" type="text/css">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oswald:400,300" type="text/css">
+
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  </head>
+</head>
+<body>
+
+<div id="wrapper">
+  <nav>
+    <ul class="top-menu">
+      <li><a href="/home">ДОМОЙ</a></li>
+      <li><a href="/about">О НАС</a></li>
+      <li><a href="/books">КНИГИ</a></li>
+      <li class="active"><a href="/books/add">ДОБАВИТЬ КНИГУ</a></li>
+      <li><a href="/authors">АВТОРЫ</a></li>
+      <li><a href="/genres">ЖАНРЫ</a></li>
+      <li><a href="/modern">СОВРЕМЕНННОЕ</a></li>
+      <li><a href="/classic">КЛАССИКА</a></li>
+      <li><a href="/contact">КОНТАКТЫ</a></li>
+    </ul>
+  </nav>
+  <div id="heading"></div>
+  <aside></aside>
+  <section>
+    <blockquote>
+      <p>
+        ИЗМЕНЕНИЕ
+      </p>
+    </blockquote>
+    <!-- Person edition -->
+  </section>
+
+  <form id="add-form" action="addBook.html" th:action="@{/books/add}" th:method="post" th:object="${book}">
+    <h3>Инфо книги:</h3>
+
+    <div class="row">
+      <label for="book-name-input">Name:</label>
+      <input id="book-name-input" name="name" type="text" value="Book name"/>
+<!--      <div class="errors" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Wrong book name error</div>-->
+    </div>
+    <br>
+
+    <div class="row">
+      <label for="author-input">Author:</label>
+      <input id="author-input" type="text" name="author" value="Author name"/>
+    </div>
+    <br>
+
+    <div class="row">
+      <label for="genre-input">Genre:</label>
+      <input id="genre-input" type="text" name="genre" value="Genre"/>
+    </div>
+    <br>
+
+    <div class="row">
+      <button type="submit">Сохранить</button>
+      <a href="/books" th:href="@{/books}"><button type="button">Отмена</button></a>
+    </div>
+  </form>
+
+</div>
+<footer></footer>
+
+</body>
+</html>

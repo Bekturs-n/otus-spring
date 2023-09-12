@@ -1,0 +1,26 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+   http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="2023-07-13--003_genre" author="bekturun.kadyrkulov">
+        <insert tableName="genres">
+            <column name="genre" value="Travel"/>
+        </insert>
+        <insert tableName="genres">
+            <column name="genre" value="Historical"/>
+        </insert>
+        <insert tableName="books_genre">
+            <column name="books_id" value="1"/>
+            <column name="genre_id" value="2"/>
+        </insert>
+        <insert tableName="books_genre">
+            <column name="books_id" value="1"/>
+            <column name="genre_id" value="3"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
