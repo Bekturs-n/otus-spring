@@ -5,8 +5,10 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import men.okuuim.domain.Student;
+import men.okuuim.dto.StudentDto;
 import men.okuuim.repository.StudentDao;
 import men.okuuim.service.StudentService;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 @Log4j2
@@ -15,42 +17,40 @@ import org.springframework.stereotype.Component;
 public class StudentServiceImpl implements StudentService {
 
     private final StudentDao studentDao;
+    private final ModelMapper modelMapper;
 
     @Override
-    public Optional<Student> getUserBy(long id) {
-        return studentDao.findUserById(id);
+    public StudentDto getStudentBy(long id) {
+        return studentDao.findStudentById(id).map(value -> modelMapper.map(value, StudentDto.class)).orElse(null);
     }
 
     @Override
-    public void update(Student student) {
-        Optional<Student> optionalUser = studentDao.findById(student.getId());
-        if (optionalUser.isEmpty()) {
+    public void update(StudentDto studentDto) {
+        Optional<Student> optional = studentDao.findById(studentDto.getId());
+        if (optional.isEmpty()) {
             log.error("No author with this credential");
             return;
         }
-
-        studentDao.save(optionalUser.get());
+        modelMapper.map(studentDto, optional.get());
+        studentDao.save(optional.get());
     }
 
     @Override
-    public void update(long id, String name) {
-
+    public Student save(StudentDto studentDto) {
+        return studentDao.save(modelMapper.map(studentDto, Student.class));
     }
 
-    @Override
-    public Student save(Student student) {
-        return studentDao.save(student);
-    }
-
+    //todo get object not id
     @Override
     public void remove(Long id) {
-        Optional<Student> student = studentDao.findUserById(id);
-        student.ifPresent(studentDao::delete);
+        studentDao.findStudentById(id).ifPresent(studentDao::delete);
     }
 
     @Override
-    public List<Student> getAll() {
-        return studentDao.findAll();
+    public List<StudentDto> getAll() {
+        return studentDao.findAll().stream()
+                .map(student -> modelMapper.map(student, StudentDto.class))
+                .toList();
     }
 
 }

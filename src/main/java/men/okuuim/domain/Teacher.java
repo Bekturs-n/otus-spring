@@ -26,5 +26,5 @@ public class Teacher {
     private String lastName;
 
     @OneToMany(mappedBy = "teacher")
-    private List<Course> cours;
+    private List<Course> course;
 }

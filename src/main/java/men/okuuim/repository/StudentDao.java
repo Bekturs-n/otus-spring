@@ -10,6 +10,6 @@ public interface StudentDao extends CrudRepository<Student, Long> {
     @Override
     List<Student> findAll();
 
-    Optional<Student> findUserById(long id);
+    Optional<Student> findStudentById(long id);
 
 }

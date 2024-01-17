@@ -1,20 +1,18 @@
 package men.okuuim.service;
 
 import java.util.List;
-import java.util.Optional;
 import men.okuuim.domain.Student;
+import men.okuuim.dto.StudentDto;
 
 public interface StudentService {
 
-    Optional<Student> getUserBy(long id);
+    StudentDto getStudentBy(long id);
 
-    void update(Student author);
+    void update(StudentDto author);
 
-    void update(long id, String name);
-
-    Student save(Student student);
+    Student save(StudentDto studentDto);
 
     void remove(Long student);
 
-    List<Student> getAll();
+    List<StudentDto> getAll();
 }
