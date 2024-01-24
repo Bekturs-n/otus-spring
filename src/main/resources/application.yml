@@ -1,20 +1,16 @@
 server:
   port: 8080
 spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/otus
+    username: postgres
   jpa:
+    database: postgresql
     show-sql: true
     hibernate:
       ddl-auto: validate
-  datasource:
-    url: jdbc:h2:mem:okuuim
-
-#todo h2 replace with another database
-#todo make other microservice for database
-  h2:
-    console:
-      path: /h2-console
-      settings:
-        web-allow-others: true
-
   liquibase:
     enabled: true
+    url: jdbc:postgresql://localhost:5432/otus
+    user: postgres
+    driver-class-name: org.postgresql.Driver

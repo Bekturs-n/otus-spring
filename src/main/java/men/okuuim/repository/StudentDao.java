@@ -1,15 +1,25 @@
 package men.okuuim.repository;
 
-import java.util.List;
-import java.util.Optional;
 import men.okuuim.domain.Student;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.r2dbc.repository.Query;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
+import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-public interface StudentDao extends CrudRepository<Student, Long> {
+@Component
+public interface StudentDao extends ReactiveCrudRepository<Student, Long> {
 
     @Override
-    List<Student> findAll();
+    Flux<Student> findAll();
 
-    Optional<Student> findStudentById(long id);
+    Mono<Student> findById(Student student);
+
+    Mono<Void> deleteById(long id);
+
+    @Query("select * from student where id = :id "
+            + "join course_student on student.id = course_student.student_id "
+            + "join course on course_student.course_id = course.id")
+    Mono<Student> findByCourse(long id);
 
 }
