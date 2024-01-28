@@ -30,11 +30,7 @@ public class Course {
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;
 
-    @ManyToMany
-    @JoinTable(
-            name = "course_student",
-            joinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "student_id", referencedColumnName = "id"))
+    @ManyToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private List<Student> students;
 
     //todo дополнить

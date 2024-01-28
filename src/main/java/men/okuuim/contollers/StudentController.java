@@ -4,8 +4,11 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import men.okuuim.dto.StudentDto;
 import men.okuuim.service.StudentService;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,28 +21,28 @@ public class StudentController {
     private final StudentService studentService;
 
     @ResponseBody
-    @GetMapping("/students/getAll")
+    @GetMapping("/student")
     public List<StudentDto> getAll() {
         return studentService.getAll();
     }
 
-    @GetMapping("/students/delete")
-    public void delete(@RequestParam("id") long id) {
+    @DeleteMapping("/student/{id}")
+    public void delete(@PathVariable long id) {
         studentService.remove(id);
     }
 
-    @PostMapping("/students/update")
+    @PutMapping("/student")
     public void update(@RequestBody StudentDto studentDto) {
         studentService.update(studentDto);
     }
 
     @ResponseBody
-    @GetMapping("/students/get")
-    public StudentDto getStudents(@RequestParam("id") long id) {
+    @GetMapping("/student/{id}")
+    public StudentDto getStudents(@PathVariable long id) {
         return studentService.getStudentBy(id);
     }
 
-    @PostMapping("/students/add")
+    @PostMapping("/student")
     public void add(@RequestBody StudentDto studentDto) {
         studentService.save(studentDto);
     }
