@@ -20,7 +20,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Cache;
 
 import java.util.List;
 
@@ -31,7 +30,7 @@ import java.util.List;
 @Table(name = "books")
 @NoArgsConstructor
 @AllArgsConstructor
-@NamedEntityGraph(name = "book-genre-eg",
+@NamedEntityGraph(name = "book-genre-author-eg",
     attributeNodes = { @NamedAttributeNode("genre"), @NamedAttributeNode("author") })
 public class Book {
 

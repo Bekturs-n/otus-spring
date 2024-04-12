@@ -19,24 +19,20 @@ public class AuthorServiceImpl implements AuthorService {
 
   @Override
   public Author getAuthorBy(long id) {
-    Optional<Author> author = authorDaoJdbc.findById(id);
-
-    if (author.isPresent()) {
-      return author.get();
-    } else {
-      log.info("No author with this credentials");
-      return null;
-    }
+    log.info("Trying to get Authors by id");
+    return authorDaoJdbc.findById(id).orElse(null);
   }
 
   @Override
   public Long getCount() {
+    log.info("Trying to get count of Authors");
     return (long) authorDaoJdbc.findAll().size();
   }
 
   @Override
   @Transactional
   public void update(Author author) {
+    log.info("Trying to update Authors");
     authorDaoJdbc.update(author);
   }
 

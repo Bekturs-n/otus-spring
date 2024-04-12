@@ -8,7 +8,6 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +30,7 @@ public class BookDaoImpl implements BookDao {
 
   @Override
   public Optional<Book> findById(long id) {
-    EntityGraph<?> eg = em.getEntityGraph("book-genre-eg");
+    EntityGraph<?> eg = em.getEntityGraph("book-genre-author-eg");
     TypedQuery<Book> tq = em.createQuery("SELECT b FROM Book b WHERE b.id = :id", Book.class);
     tq.setParameter("id", id);
     tq.setHint("jakarta.persistence.fetchgraph", eg);
@@ -42,7 +41,7 @@ public class BookDaoImpl implements BookDao {
   public Book findByName(String name) {
     Book book;
     try {
-      EntityGraph<?> eg = em.getEntityGraph("book-genre-eg");
+      EntityGraph<?> eg = em.getEntityGraph("book-genre-author-eg");
       TypedQuery<Book> tq = em.createQuery("SELECT b FROM Book b WHERE b.bookName = :name", Book.class);
       tq.setParameter("name", name);
       tq.setHint("jakarta.persistence.fetchgraph", eg);
@@ -65,7 +64,7 @@ public class BookDaoImpl implements BookDao {
 
   @Override
   public List<Book> findAll() {
-    EntityGraph<?> eg = em.getEntityGraph("book-genre-eg");
+    EntityGraph<?> eg = em.getEntityGraph("book-genre-author-eg");
     TypedQuery<Book> tq = em.createQuery("SELECT b FROM Book b", Book.class);
     tq.setHint("jakarta.persistence.fetchgraph", eg);
     return tq.getResultList();

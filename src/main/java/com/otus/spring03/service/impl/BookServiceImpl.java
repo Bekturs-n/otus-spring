@@ -46,14 +46,9 @@ public class BookServiceImpl implements BookService {
   }
 
   @Override
+  @Transactional
   public Book getBy(long id) {
-    Optional<Book> book = bookDaoJdbc.findById(id);
-    if (book.isPresent()) {
-      return book.get();
-    } else {
-      log.info("No book with this credentials");
-      return null;
-    }
+    return bookDaoJdbc.findById(id).orElse(null);
   }
 
   @Override
