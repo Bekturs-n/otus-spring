@@ -4,11 +4,11 @@ spring:
   r2dbc:
     url: r2dbc:postgresql://localhost:5432/otus
     username: postgres
-  jpa:
-    database: postgresql
-    show-sql: true
-    hibernate:
-      ddl-auto: validate
+#  jpa:
+#    database: postgresql
+#    show-sql: true
+#    hibernate:
+#      ddl-auto: validate
   liquibase:
     enabled: true
     url: jdbc:postgresql://localhost:5432/otus

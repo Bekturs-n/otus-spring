@@ -1,6 +1,5 @@
 package men.okuuim.repository;
 
-import java.util.List;
 import men.okuuim.domain.Course;
 import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;

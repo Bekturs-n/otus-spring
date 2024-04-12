@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import men.okuuim.domain.Course;
 import men.okuuim.domain.CourseStudent;
 import men.okuuim.domain.Student;
@@ -26,6 +27,7 @@ import reactor.core.scheduler.Schedulers;
 
 //todo need interface ???
 @Component
+@Log4j2
 @RequiredArgsConstructor
 public class StudentHandler {
 
@@ -35,6 +37,7 @@ public class StudentHandler {
     private final ModelMapper modelMapper;
 
     public Mono<ServerResponse> getAll(ServerRequest request) {
+        log.info("Trying to get students");
         Flux<StudentDto> dtoFlux = studentDao.findAll().map(m -> modelMapper.map(m, StudentDto.class))
                 .switchIfEmpty(Flux.empty());
 
