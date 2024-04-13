@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <title>Whitesquare</title>
+        <link rel="stylesheet" href="/style.css" type="text/css">
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oswald:400,300" type="text/css">
+
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    </head>
+</head>
+<body>
+
+<div id="wrapper">
+    <nav>
+        <ul class="top-menu">
+            <li><a href="/home">ДОМОЙ</a></li>
+            <li><a href="/about">О НАС</a></li>
+            <li class="active"><a href="/books">КНИГИ</a></li>
+            <li><a href="/books/add">ДОБАВИТЬ КНИГУ</a></li>
+            <li><a href="/authors">АВТОРЫ</a></li>
+            <li><a href="/genres">ЖАНРЫ</a></li>
+            <li><a href="/modern">СОВРЕМЕНННОЕ</a></li>
+            <li><a href="/classic">КЛАССИКА</a></li>
+            <li><a href="/contact">КОНТАКТЫ</a></li>
+        </ul>
+    </nav>
+    <div id="heading"></div>
+    <aside></aside>
+    <section>
+        <blockquote>
+            <p>
+                КНИГИ
+            </p>
+        </blockquote>
+    </section>
+    <table class="books" th:color="black" >
+        <thead>
+        <tr th:each="book : ${books}">
+            <td th:text="${book.id}">1</td>
+            <td th:text="${book.name}">Book</td>
+            <td th:text="${book.author}">Author</td>
+            <td th:text="${book.genre}" href="/genre" >Genre</td>
+            <td>
+                 <a th:href="@{/edit(id=${book.id})}" href="edit.html">Изменить</a>
+            </td>
+            <td>
+                 <a th:href="@{/delete(id=${book.id})}" href="edit.html">Удалить</a>
+            </td>
+        </tr>
+        </thead>
+    </table>
+</div>
+<footer></footer>
+
+</body>
+</html>

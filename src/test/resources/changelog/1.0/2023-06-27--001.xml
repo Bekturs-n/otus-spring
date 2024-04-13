@@ -1,0 +1,74 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+   http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="2023-06-27--001-authors" author="bektursun.kadyrkulov" context="test">
+        <createTable tableName="authors">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="author" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="surname" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2023-06-27--001-genres" author="bektursun.kadyrkulov" context="test">
+        <createTable tableName="genres">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="genre" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2023-06-27--001-books" author="bektursun.kadyrkulov" context="test">
+        <createTable tableName="books">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="book_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="author_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_author_id" references="authors(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2023-06-27--001-books_genre" author="bektursun.kadyrkulov" context="test">
+        <createTable tableName="books_genre">
+            <column name="books_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_book_id" references="books(id)"/>
+            </column>
+            <column name="genre_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_genres_id" references="genres(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2023-07-13--003_genre" author="bekturun.kadyrkulov" context="test">
+        <createTable tableName="comments">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="comment" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="book_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
