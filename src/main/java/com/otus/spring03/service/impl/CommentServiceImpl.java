@@ -5,19 +5,17 @@ import com.otus.spring03.dao.CommentDao;
 import com.otus.spring03.model.Book;
 import com.otus.spring03.model.Comment;
 import com.otus.spring03.service.CommentService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 
 @Log4j2
 @Component
 @RequiredArgsConstructor
-@EnableTransactionManagement
 public class CommentServiceImpl implements CommentService {
 
   private final CommentDao commentDao;
