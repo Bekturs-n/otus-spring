@@ -9,7 +9,7 @@ spring:
     url: jdbc:h2:mem:okuuim
 
 #todo h2 replace with another database
-#todo make other microservice for database
+#todo make other microservice for database ???
   h2:
     console:
       path: /h2-console
