@@ -31,6 +31,7 @@ public class StudentServiceImpl implements StudentService {
             log.error("No author with this credential");
             return;
         }
+        studentDto.setEmail(optional.get().getEmail());
         modelMapper.map(studentDto, optional.get());
         studentDao.save(optional.get());
     }
