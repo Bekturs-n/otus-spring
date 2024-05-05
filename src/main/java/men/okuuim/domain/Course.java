@@ -9,8 +9,6 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
-// todo javadocs
-
 @Getter
 @Setter
 @Builder
@@ -24,6 +22,4 @@ public class Course {
     private String name;
     private Teacher teacher;
     private List<Student> students;
-
-    //todo дополнить
 }

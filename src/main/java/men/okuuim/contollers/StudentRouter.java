@@ -20,5 +20,4 @@ public class StudentRouter {
                         .DELETE("/{id}", studentHandler::delete))
                 .build();
     }
-
 }

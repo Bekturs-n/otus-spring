@@ -1,11 +1,8 @@
 package men.okuuim.service.impl;
 
 import java.util.List;
-import java.util.Optional;
 import men.okuuim.domain.Student;
-import men.okuuim.dto.StudentDto;
 import men.okuuim.repository.StudentDao;
-import net.bytebuddy.implementation.bind.annotation.IgnoreForBinding;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -15,14 +12,6 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 class StudentServiceImplTest {

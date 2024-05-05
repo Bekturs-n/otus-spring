@@ -1,8 +1,6 @@
 package men.okuuim.service;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import men.okuuim.domain.Course;
@@ -13,14 +11,12 @@ import men.okuuim.exceptions.NotFoundException;
 import men.okuuim.repository.CourseDao;
 import men.okuuim.repository.CourseStudentDao;
 import men.okuuim.repository.StudentDao;
-import org.modelmapper.Converters.Collection;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
-import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -44,7 +40,7 @@ public class StudentHandler {
         Mono<ServerResponse> notFound = ServerResponse.notFound().build();
 
         return ServerResponse.ok()
-                .contentType(MediaType.APPLICATION_STREAM_JSON)
+                .contentType(MediaType.valueOf(MediaType.APPLICATION_JSON_VALUE))
                 .body(dtoFlux, StudentDto.class)
                 .switchIfEmpty(notFound);
     }
@@ -77,7 +73,7 @@ public class StudentHandler {
         Mono<ServerResponse> notFound = ServerResponse.notFound().build();
 
         return ServerResponse.ok()
-                .contentType(MediaType.APPLICATION_STREAM_JSON)
+                .contentType(MediaType.valueOf(MediaType.APPLICATION_JSON_VALUE))
                 .body(dto, StudentDto.class)
                 .switchIfEmpty(notFound);
     }
@@ -111,7 +107,7 @@ public class StudentHandler {
         Mono<ServerResponse> notFound = ServerResponse.notFound().build();
 
         return ServerResponse.ok()
-                .contentType(MediaType.APPLICATION_STREAM_JSON)
+                .contentType(MediaType.valueOf(MediaType.APPLICATION_JSON_VALUE))
                 .body(dto, StudentDto.class)
                 .switchIfEmpty(notFound);
     }
@@ -123,7 +119,7 @@ public class StudentHandler {
         return studentDtoMono.flatMap(studentDto ->
                         ServerResponse
                                 .status(HttpStatus.CREATED)
-                                .contentType(MediaType.APPLICATION_JSON)
+                                .contentType(MediaType.valueOf(MediaType.APPLICATION_JSON_VALUE))
                                 .body(studentDao
                                         .save(modelMapper
                                                 .map(studentDto, Student.class)), StudentDto.class))
