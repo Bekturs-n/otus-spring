@@ -66,5 +66,4 @@
         </createTable>
     </changeSet>
 
-<!--    todo then update and add password and other rows for table-->
 </databaseChangeLog>
