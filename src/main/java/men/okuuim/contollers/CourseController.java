@@ -1,5 +1,7 @@
 package men.okuuim.contollers;
 
+import java.util.List;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import men.okuuim.dto.CourseDto;
 import men.okuuim.service.CourseService;
@@ -18,6 +20,12 @@ public class CourseController {
     @GetMapping("/course/{id}")
     public CourseDto getCourse(@PathVariable long id) {
         return service.getCourse(id);
+    }
+
+    @ResponseBody
+    @GetMapping("/course")
+    public List<CourseDto> getAll() {
+        return service.getAll();
     }
 
 }

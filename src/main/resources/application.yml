@@ -8,7 +8,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/otus
     username: postgres
-#    password: password
+#    password: noPassword
   liquibase:
     enabled: true
     url: jdbc:postgresql://localhost:5432/otus

@@ -16,7 +16,6 @@ import men.okuuim.domain.Teacher;
 public class CourseDto {
 
     private String name;
-
-    private Map<Long, String> teacher;
+    private TeacherDto teacher;
 
 }

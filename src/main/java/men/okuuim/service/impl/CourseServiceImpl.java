@@ -1,16 +1,14 @@
 package men.okuuim.service.impl;
 
-import jakarta.transaction.Transactional;
-import java.util.Map;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import men.okuuim.domain.Course;
 import men.okuuim.dto.CourseDto;
 import men.okuuim.repository.CourseDao;
 import men.okuuim.service.CourseService;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Log4j2
 @Component
@@ -21,26 +19,16 @@ public class CourseServiceImpl implements CourseService {
     private final ModelMapper modelMapper;
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public CourseDto getCourse(long id) {
-        PropertyMap<Course, CourseDto> propertyMap = new PropertyMap<>() {
-            protected void configure() {
-                map().setTeacher(Map.of(source.getTeacher().getId(), source.getTeacher().getLastName()));
-            }
-        };
-        modelMapper.addMappings(propertyMap);
-
         return courseDao.findById(id).map(c -> modelMapper.map(c, CourseDto.class)).orElse(null);
     }
 
-
-
-    private PropertyMap<Course, CourseDto> configMapper() {
-        return new PropertyMap<>() {
-            protected void configure() {
-                map().setTeacher(Map.of(source.getTeacher().getId(), source.getTeacher().getLastName()));
-            }
-        };
+    @Override
+    @Transactional(readOnly = true)
+    public List<CourseDto> getAll() {
+        return courseDao.findAll().stream()
+                .map(course -> modelMapper.map(course, CourseDto.class))
+                .toList();
     }
-
 }

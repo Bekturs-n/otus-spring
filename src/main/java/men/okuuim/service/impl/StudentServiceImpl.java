@@ -10,6 +10,7 @@ import men.okuuim.repository.StudentDao;
 import men.okuuim.service.StudentService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Log4j2
 @Component
@@ -20,6 +21,7 @@ public class StudentServiceImpl implements StudentService {
     private final ModelMapper modelMapper;
 
     @Override
+    @Transactional(readOnly = true)
     public StudentDto getStudentBy(long id) {
         return studentDao.findStudentById(id).map(value -> modelMapper.map(value, StudentDto.class)).orElse(null);
     }
@@ -48,6 +50,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<StudentDto> getAll() {
         return studentDao.findAll().stream()
                 .map(student -> modelMapper.map(student, StudentDto.class))
