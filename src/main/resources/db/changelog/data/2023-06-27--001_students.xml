@@ -1,0 +1,36 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+   http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    
+    <changeSet id="2023-06-27--001_student" author="bekturun.kadyrkulov">
+        <insert tableName="student">
+            <column name="email" value="Alexandre_Dumas@gamil.com"/>
+            <column name="first_name" value="Alexandre"/>
+            <column name="last_name" value="Dumas"/>
+            <column name="enabled" value="true"/>
+        </insert>
+        <insert tableName="student">
+            <column name="email" value="Tolstoy_Lev@gamil.com"/>
+            <column name="first_name" value="Lev"/>
+            <column name="last_name" value="Tolstoy"/>
+            <column name="enabled" value="true"/>
+        </insert>
+        <insert tableName="student">
+            <column name="email" value="Pushkin@gamil.com"/>
+            <column name="first_name" value="Aleksandr"/>
+            <column name="last_name" value="Pushkin"/>
+            <column name="enabled" value="true"/>
+        </insert>
+        <insert tableName="student">
+            <column name="email" value="Gogol@gamil.com"/>
+            <column name="first_name" value="Nikolai"/>
+            <column name="last_name" value="Gogol"/>
+            <column name="enabled" value="true"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
