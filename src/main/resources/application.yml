@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8088
 spring:
   jpa:
     show-sql: true
@@ -14,5 +14,9 @@ spring:
     url: jdbc:postgresql://localhost:5432/otus
     user: postgres
     driver-class-name: org.postgresql.Driver
+logging:
+  level:
+    root: error
+    org.springframework: info
 
 #todo make other microservice for database ???

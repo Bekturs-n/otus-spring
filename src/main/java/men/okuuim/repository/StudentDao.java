@@ -12,4 +12,6 @@ public interface StudentDao extends CrudRepository<Student, Long> {
 
     Optional<Student> findStudentById(long id);
 
+    Student getStudentByEmail(String email);
+
 }
