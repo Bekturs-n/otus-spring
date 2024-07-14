@@ -2,8 +2,8 @@ package men.okuuim.contollers;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import men.okuuim.dto.StudentDto;
-import men.okuuim.service.StudentService;
+import men.okuuim.dto.UserDto;
+import men.okuuim.service.UserService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,35 +15,36 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class StudentController {
+//todo rename url from student to user
+public class UserController {
 
-    private final StudentService studentService;
+    private final UserService userService;
 
     @ResponseBody
     @GetMapping("/student")
-    public List<StudentDto> getAll() {
-        return studentService.getAll();
+    public List<UserDto> getAll() {
+        return userService.getAll();
     }
 
     @DeleteMapping("/student/{id}")
     public void delete(@PathVariable long id) {
-        studentService.remove(id);
+        userService.remove(id);
     }
 
     @PutMapping("/student")
-    public void update(@RequestBody StudentDto studentDto) {
-        studentService.update(studentDto);
+    public void update(@RequestBody UserDto userDto) {
+        userService.update(userDto);
     }
 
     @ResponseBody
     @GetMapping("/student/{id}")
-    public StudentDto getStudent(@PathVariable long id) {
-        return studentService.getStudentBy(id);
+    public UserDto getUser(@PathVariable long id) {
+        return userService.getUserBy(id);
     }
 
     @PostMapping("/student")
-    public void add(@RequestBody StudentDto studentDto) {
-        studentService.save(studentDto);
+    public void add(@RequestBody UserDto userDto) {
+        userService.save(userDto);
     }
 
 }

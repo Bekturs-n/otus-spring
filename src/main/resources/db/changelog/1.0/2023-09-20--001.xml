@@ -7,21 +7,7 @@
    http://www.liquibase.org/xml/ns/dbchangelog
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-    <changeSet id="2023-09-20--001-teacher" author="bektursun.kadyrkulov">
-        <createTable tableName="teacher">
-            <column name="id" type="bigint" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="first_name" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="last_name" type="varchar(255)">
-                <constraints nullable="true"/>
-            </column>
-        </createTable>
-    </changeSet>
-
-    <changeSet id="2023-09-20--001-course" author="bektursun.kadyrkulov">
+    <changeSet id="2023-09-20--001-course_okuim" author="bektursun.kadyrkulov">
         <createTable tableName="course">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -29,18 +15,24 @@
             <column name="name" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="teacher_id" type="bigint">
-                <constraints nullable="true" foreignKeyName="fk_teacher_id" references="teacher(id)"/>
+            <column name="users_id" type="bigint">
+                <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
 
-    <changeSet id="2023-09-20--001-student" author="bektursun.kadyrkulov">
-        <createTable tableName="student">
+    <changeSet id="2023-09-20--001-users_okuim" author="bektursun.kadyrkulov">
+        <createTable tableName="users">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="email" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="first_name" type="varchar(255)">
@@ -55,13 +47,13 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="2023-09-20--001-course_student" author="bektursun.kadyrkulov">
-        <createTable tableName="course_student">
+    <changeSet id="2023-09-20--001-course_users" author="bektursun.kadyrkulov">
+        <createTable tableName="course_users">
             <column name="course_id" type="bigint">
                 <constraints nullable="false" foreignKeyName="fk_course_id" references="course(id)"/>
             </column>
-            <column name="student_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="fk_student_id" references="student(id)"/>
+            <column name="users_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_users_id" references="users(id)"/>
             </column>
         </createTable>
     </changeSet>

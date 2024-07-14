@@ -24,7 +24,7 @@ class SecurityConfigurationTest {
     }
 
     @Test
-    void studentUrlIsUnauthorizedStatus() throws Exception {
+    void userUrlIsUnauthorizedStatus() throws Exception {
         api.perform(get("/student")).andExpect(status().isUnauthorized());
     }
 

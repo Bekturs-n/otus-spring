@@ -37,11 +37,13 @@ public class Course {
     private String name;
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    @JoinColumn(name = "teacher_id")
-    private Teacher teacher;
+    @JoinColumn(name = "users_id")
+    private Users teacher;
 
     @ManyToMany(mappedBy = "course", cascade = CascadeType.ALL)
-    private List<Student> students;
+    private List<Users> students;
+
+
 
     //todo дополнить
 }

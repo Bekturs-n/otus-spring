@@ -7,10 +7,10 @@
    http://www.liquibase.org/xml/ns/dbchangelog
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-    <changeSet id="2023-07-13--003_course" author="bekturun.kadyrkulov">
+    <changeSet id="2023-07-13--003_course_okuim" author="bekturun.kadyrkulov">
         <insert tableName="course">
             <column name="name" value="Chemistry"/>
-            <column name="teacher_id" value="1"/>
+            <column name="users_id" value="1"/>
         </insert>
     </changeSet>
 </databaseChangeLog>

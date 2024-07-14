@@ -1,9 +1,9 @@
-package men.okuuim.security.service;
+package men.okuuim.service.impl;
 
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import men.okuuim.domain.Student;
-import men.okuuim.repository.StudentDao;
-import org.springframework.security.core.userdetails.User;
+import men.okuuim.domain.Users;
+import men.okuuim.repository.UsersDao;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,19 +13,15 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final StudentDao studentDao;
+    private final UsersDao userDao;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Student student = studentDao.getStudentByEmail(email);
-        if (student == null) {
+        Optional<Users> optionalUser = userDao.getUserByEmail(email);
+        if (optionalUser.isEmpty()) {
             throw new UsernameNotFoundException("Unknown user: " + email);
         }
 
-        return User.builder()
-                .username(student.getEmail())
-                .password(student.getPassword())
-                .roles(student.getRole())
-                .build();
+        return optionalUser.get();
     }
 }

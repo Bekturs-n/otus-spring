@@ -11,10 +11,9 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TeacherDto {
+public class LoginUserDto {
 
-    private Long id;
-    private String firstName;
-    private String lastName;
+    private String email;
+    private String password;
 
 }

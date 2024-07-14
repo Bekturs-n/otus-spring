@@ -7,9 +7,9 @@
    http://www.liquibase.org/xml/ns/dbchangelog
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-    <changeSet id="2023-07-13--003_genre" author="bekturun.kadyrkulov">
-        <insert tableName="course_student">
-            <column name="student_id" value="1"/>
+    <changeSet id="2023-07-13--003_course_user" author="bekturun.kadyrkulov">
+        <insert tableName="course_users">
+            <column name="users_id" value="2"/>
             <column name="course_id" value="1"/>
         </insert>
     </changeSet>

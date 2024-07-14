@@ -1,7 +1,6 @@
 package men.okuuim.contollers;
 
 import java.util.List;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import men.okuuim.dto.CourseDto;
 import men.okuuim.service.CourseService;
@@ -14,18 +13,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class CourseController {
 
-    private final CourseService service;
+    private final CourseService courseService;
 
     @ResponseBody
     @GetMapping("/course/{id}")
     public CourseDto getCourse(@PathVariable long id) {
-        return service.getCourse(id);
+        return courseService.getCourse(id);
     }
 
     @ResponseBody
     @GetMapping("/course")
     public List<CourseDto> getAll() {
-        return service.getAll();
+        return courseService.getAll();
     }
 
 }

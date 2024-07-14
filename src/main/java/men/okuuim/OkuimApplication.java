@@ -8,14 +8,15 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 
 @SpringBootApplication
 @EnableMethodSecurity
-public class OkuuimApplication {
+public class OkuimApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(OkuuimApplication.class, args);
+        SpringApplication.run(OkuimApplication.class, args);
     }
 
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
+
 }

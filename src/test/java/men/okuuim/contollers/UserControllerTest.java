@@ -1,9 +1,7 @@
 package men.okuuim.contollers;
 
-import men.okuuim.dto.StudentDto;
-import org.junit.jupiter.api.AfterEach;
+import men.okuuim.dto.UserDto;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-class StudentControllerTest {
+class UserControllerTest {
 
     @LocalServerPort
     private int port;
@@ -35,7 +33,7 @@ class StudentControllerTest {
     }
 
     @Test
-    void getStudent() {
+    void getUser() {
         assertThat(restTemplate.getForObject(URL + "/students/get?id=" + ID,
                 String.class)).contains("Alexandre").contains("Dumas").contains("Alexandre_Dumas");
     }
@@ -57,9 +55,9 @@ class StudentControllerTest {
 
     @Test
     void updateBook() {
-        StudentDto studentDto = StudentDto.builder().id(2).firstName("Alex").lastName("Duma").email("new@gmail.com")
+        UserDto userDto = UserDto.builder().id(2).firstName("Alex").lastName("Duma").email("new@gmail.com")
                 .build();
-        HttpEntity<StudentDto> request = new HttpEntity<>(studentDto);
+        HttpEntity<UserDto> request = new HttpEntity<>(userDto);
         ResponseEntity<String> response = restTemplate.postForEntity(URL + "/students/update", request,
                 String.class);
 
@@ -70,8 +68,8 @@ class StudentControllerTest {
 
     @Test
     void add() {
-        StudentDto studentDto = StudentDto.builder().firstName("Alex").lastName("Duma").email("new@gmail.com").build();
-        HttpEntity<StudentDto> request = new HttpEntity<>(studentDto);
+        UserDto userDto = UserDto.builder().firstName("Alex").lastName("Duma").email("new@gmail.com").build();
+        HttpEntity<UserDto> request = new HttpEntity<>(userDto);
         ResponseEntity<String> response = restTemplate.postForEntity(URL + "/students/add", request,
                 String.class);
 
